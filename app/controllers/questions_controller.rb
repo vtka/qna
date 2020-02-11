@@ -6,7 +6,9 @@ class QuestionsController < ApplicationController
 
   def show; end
 
-  def new; end
+  def new
+    @question = Question.new
+  end
 
   def edit; end
 
