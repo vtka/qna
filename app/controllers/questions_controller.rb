@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
 
     if @question.save
       redirect_to @question, notice: 'Your question was successfully created.'
@@ -33,8 +33,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
+    unless current_user.author_of?(@question)
+      return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
+    end
+
     @question.destroy
-    redirect_to questions_path
+    redirect_to questions_path, notice: 'Your question was successfully deleted.'
   end
 
   private
