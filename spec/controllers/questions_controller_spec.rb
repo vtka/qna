@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
+    let(:questions) { create_list(:question, 3, author: user) }
     before { get :index }
 
     it 'populates an array of all questions' do
@@ -50,7 +50,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :edit
     end
   end
-  
+
   describe 'POST #create' do
     before { login(user) }
 
@@ -86,7 +86,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to eq question
       end
 
-      it 'changes question attributes' do 
+      it 'changes question attributes' do
         patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
         question.reload
 
@@ -118,7 +118,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     before { login(user) }
-    let!(:question) { create(:question) }
+    let!(:question) { create(:question, author: user) }
 
     it 'deletes the question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)

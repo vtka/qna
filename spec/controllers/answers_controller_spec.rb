@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  
+  let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'assigns a parent question to the answer' do
