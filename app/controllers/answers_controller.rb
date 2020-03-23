@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.author?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Your question was successfully deleted.'
+      redirect_to question_path(@answer.question), notice: 'Your answer was successfully deleted.'
     else
       return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
     end
