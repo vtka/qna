@@ -4,30 +4,63 @@ RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
 
+  before { login(user) }
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'assigns a parent question to the answer' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(question.answers, :count).by(1)
       end
 
-      it 'saves new answer to the database' do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(Answer, :count).by(1)
+      it 'assigns an author to the answer' do
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(user.answers, :count).by(1)
       end
 
-      it 'redirects to show view' do
+      it "redirects to this answer's question's show view" do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to question_answer_path(question, assigns(:answer))
+        expect(response).to redirect_to question_path(question)
       end
     end
 
     context 'with invalid attributes' do
-      it 'does not save new answer in the database' do
-        expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.not_to change(Answer, :count)
+      it 'does not save new answer' do
+        expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
+      it 're-renders show questions view with a form to create an answer' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
-        expect(response).to render_template :new
+        expect(response).to render_template :'questions/show'
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:users) { create_list(:user, 2) }
+    let!(:answer) { create(:answer, question: question, author_id: users.first.id ) }
+
+    context 'user is author' do
+      before { sign_in(users.first) }
+
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer, question_id: question } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question' do
+        delete :destroy, params: { id: answer, question_id: question }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'user is not an author' do
+      before { login(users.last) }
+
+      it 'does not delete an answer' do
+        expect { delete :destroy, params: { id: answer, question_id: question } }.to_not change(Answer, :count)
+      end
+
+      it 'redirects to 403 page' do
+        delete :destroy, params: { id: answer, question_id: question }
+        expect(response.status).to eq(403)
       end
     end
   end

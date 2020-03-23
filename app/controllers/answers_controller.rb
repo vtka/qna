@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show destroy create]
   before_action :find_question, only: %i[new create]
-  before_action :find_answer, only: :show
+  before_action :find_answer, only: :destroy
 
   def show; end
 
@@ -10,11 +11,21 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.author = current_user
 
     if @answer.save
-      redirect_to question_answer_path(@question, @answer)
+      redirect_to @question, notice: 'Your answer was successfully created.'
     else
-      render :new
+      render 'questions/show'
+    end
+  end
+
+  def destroy
+    if current_user.author?(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Your question was successfully deleted.'
+    else
+      return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
     end
   end
 
@@ -28,6 +39,6 @@ class AnswersController < ApplicationController
     end
 
     def answer_params
-      params.require(:answer).permit(:body, :title)
+      params.require(:answer).permit(:body)
     end
 end

@@ -6,7 +6,9 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
-  def show ; end
+  def show
+    @answer = Answer.new
+  end
 
   def new
     @question = Question.new
@@ -33,7 +35,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    unless current_user.author_of?(@question)
+    unless current_user.author?(@question)
       return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
     end
 
