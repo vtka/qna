@@ -1,12 +1,12 @@
 import "core-js/stable";
-import "regenerator-runtime/runtime";
+import "regenerator-runtime/runtime"
 
 import Turbolinks from "turbolinks";
 
 import Rails from '@rails/ujs';
 import '../src/scss/application.scss'
 
-// Turbolinks.start();
+Turbolinks.start();
 Rails.start();
 
 

@@ -16,18 +16,18 @@ feature 'User can create answer', %q{
       visit question_path(question)
     end
 
-    scenario 'gives answer' do
-      fill_in 'Body', with: 'Text text text'
+    scenario 'gives answer', js: true do
+      fill_in 'Your answer', with: 'Text text text'
       click_on 'Answer'
 
       expect(page).to have_content 'Your answer was successfully created.'
       expect(page).to have_content 'Text text text'
     end
 
-    scenario 'give answer with invalid params' do
+    scenario 'give answer with invalid params', js: true do
       click_on 'Answer'
 
-      expect(page).to have_content "Body can't be blank"
+      expect(page).to have_content "Body can't be blank" 
     end
 
   end
