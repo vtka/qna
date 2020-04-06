@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show destroy create]
+  before_action :authenticate_user!, except: %i[destroy create]
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: :destroy
 
@@ -15,8 +15,8 @@ class AnswersController < ApplicationController
 
     if @answer.save
       redirect_to @question, notice: 'Your answer was successfully created.'
-    else
-      render 'questions/show'
+    # else
+    #   render 'questions/show'
     end
   end
 
