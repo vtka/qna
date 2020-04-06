@@ -12,6 +12,6 @@
     tbody
     p= render @question.answers
 
-    - if user_signed_in?
-      b= 'Your answer'
-      =render 'answers/form'
+  - if user_signed_in?
+    b= 'Your answer'
+    =render 'answers/form'
