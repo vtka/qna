@@ -9,9 +9,8 @@
       p= link_to 'Delete', question_path(@question), method: :delete, class: 'btn btn-danger'
 
   table.table.table-hover.col-md-6.mt-3
-    tbody
-    p= render @question.answers
+    tr.answers
+      = render @question.answers
 
   - if user_signed_in?
-    b= 'Your answer'
-    =render 'answers/form'
+    = render 'answers/form'

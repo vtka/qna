@@ -14,11 +14,7 @@ class AnswersController < ApplicationController
     @answer.author = current_user
 
     if @answer.save
-      redirect_to @question, notice: 'Your answer was successfully created.'
-    # else
-    #   respond_to do |format|
-    #     format.js { render layout: false }
-    #   end
+      flash[:notice] = 'Your answer was successfully created.'
     end
   end
 
