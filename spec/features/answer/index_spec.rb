@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can see question\s answer list list in order to find suitable answers' do
   given(:user) { create(:user) }

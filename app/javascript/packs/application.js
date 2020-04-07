@@ -1,3 +1,5 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 import '../src/scss/application.scss'
 require("@rails/ujs").start()
 require("turbolinks").start()
