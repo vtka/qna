@@ -1,13 +1,18 @@
-- if answer.persisted?
-  p= answer.body
+.card class='bg-light'
+    .card-body
+      p.card-text
+        - if answer.persisted?
+          p= answer.body
 
-  - if user_signed_in? && current_user&.author?(answer)
-    div class='deleteAnswer'
-      p= link_to 'Delete', answer_path(answer), method: :delete
-    
-    div class='updateAnswer'
-      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-        = f.label :body, 'Your answer'
-        = f.text_area :body
-        = f.submit 'Save'
+          - if user_signed_in? && current_user&.author?(answer)
+            div class='updateAnswer'
+              p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+              = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+                = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Edit your answer'
+                = f.submit 'Save', class: 'btn btn-primary'
+            div class='deleteAnswer'
+              p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger'
+              
+div class='divider mt-4 mb-4'
+  <hr/>
+      

@@ -1,19 +1,29 @@
-h1= @question.title
-p= @question.body
-= link_to 'Edit', edit_question_path(@question), class: 'btn btn-warning'
-= link_to 'Back', questions_path, class: 'btn btn-primary'
-- if current_user&.author?(@question)
-    div class='deleteQuestion'
-      p= link_to 'Delete', question_path(@question), method: :delete, class: 'btn btn-danger'
+.row.justify-content-center.mt-3
+  .col.col-md-10
+    div class='question mt-3 mb-3'
+      .card class='bg-light'
+        .card-body
+          h1.card-title
+            .title= @question.title
+          p.card-text
+            .body= @question.body
+          p= link_to 'Edit', edit_question_path(@question), class: 'text-primary'
+          p= link_to 'Back', questions_path, class: 'text-primary'
+          - if current_user&.author?(@question)
+              div class='deleteQuestion'
+                p= link_to 'Delete', question_path(@question), method: :delete, class: 'text-danger'
 
-.answers
-  = render @question.answers
+    div class='divider mt-4 mb-4'
+      <hr/>
 
-.answer-errors
-  = render 'shared/errors', resource: @answer
-- if user_signed_in?
-  / #new_answer
-  = form_with model: [@question, @answer], class: 'new-answer' do |f|
-    = f.label :body, 'Your answer'
-    = f.text_area :body
-    = f.submit 'Answer'
+    .answers
+      = render @question.answers
+
+    .answer-errors
+      = render 'shared/errors', resource: @answer
+
+    div class='divider mt-4 mb-4'
+      <hr/>
+
+    - if user_signed_in?
+      =render 'answers/form'
