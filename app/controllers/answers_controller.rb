@@ -1,12 +1,23 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[destroy create]
   before_action :find_question, only: %i[new create]
-  before_action :find_answer, only: :destroy
+  before_action :find_answer, only: %i[destroy update]
 
   def show; end
 
   def new
     @answer = @question.answers.new
+  end
+
+  def edit; end
+
+  def update
+    @question = @answer.question
+
+    if current_user.author?(@answer)
+      @answer.update(answer_params)
+      flash.now[:notice] = 'Answer was successfully edited'
+    end
   end
 
   def create
