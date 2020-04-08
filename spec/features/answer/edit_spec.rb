@@ -19,18 +19,18 @@ feature 'User can edit his answer', %q{
   end
 
   describe 'Authenticated user' do
-    scenario 'edits answer' do
+    scenario 'edits his answer', js: true do
       sign_in(users.first)
       visit question_path(question)
-
-      within '.updateAnswer' do
+      
+      within '.answers' do
         click_on 'Edit'
         fill_in 'Your answer', with: 'Edited answer'
         click_on 'Save'
 
-        expect(page).not_to have_content answer.body
+        expect(page).to_not have_content answer.body
         expect(page).to have_content 'Edited answer'
-        expect(page).not_to have_selector 'textarea'
+        expect(page).to_not have_selector 'textarea'
       end
     end
 

@@ -12,11 +12,9 @@ class AnswersController < ApplicationController
   def edit; end
 
   def update
-    @question = @answer.question
-
     if current_user.author?(@answer)
       @answer.update(answer_params)
-      flash.now[:notice] = 'Answer was successfully edited'
+      @question = @answer.question
     end
   end
 

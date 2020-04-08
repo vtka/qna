@@ -1,16 +1,37 @@
-.container
-  h5.mt-4= @question.title
-  p= @question.body
-  = link_to 'Edit', edit_question_path(@question), class: 'btn btn-warning'
-  = link_to 'Back', questions_path, class: 'btn btn-primary'
+/ .container
+/   h5.mt-4= @question.title
+/   p= @question.body
+/   = link_to 'Edit', edit_question_path(@question), class: 'btn btn-warning'
+/   = link_to 'Back', questions_path, class: 'btn btn-primary'
 
-  - if current_user&.author?(@question)
+/   - if current_user&.author?(@question)
+/     div class='deleteQuestion'
+/       p= link_to 'Delete', question_path(@question), method: :delete, class: 'btn btn-danger'
+
+/   table.table.table-hover.col-md-6.mt-3
+/     tr.answers
+/       = render @question.answers
+
+/   - if user_signed_in?
+/     #new_answer
+/       = render 'answers/form'
+
+h1= @question.title
+p= @question.body
+= link_to 'Edit', edit_question_path(@question), class: 'btn btn-warning'
+= link_to 'Back', questions_path, class: 'btn btn-primary'
+- if current_user&.author?(@question)
     div class='deleteQuestion'
       p= link_to 'Delete', question_path(@question), method: :delete, class: 'btn btn-danger'
 
-  table.table.table-hover.col-md-6.mt-3
-    tr.answers
-      = render @question.answers
+.answers
+  = render @question.answers
 
-  - if user_signed_in?
-    = render 'answers/form'
+.answer-errors
+  = render 'shared/errors', resource: @answer
+- if user_signed_in?
+  / #new_answer
+  = form_with model: [@question, @answer], class: 'new-answer' do |f|
+    = f.label :body, 'Your answer'
+    = f.text_area :body
+    = f.submit 'Answer'
