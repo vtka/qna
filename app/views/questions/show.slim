@@ -15,12 +15,12 @@
 
     div class='divider mt-4 mb-4'
       <hr/>
+      
+    .answer-errors
+      = render 'shared/errors', resource: @answer
 
     .answers
       = render @question.answers
-
-    .answer-errors
-      = render 'shared/errors', resource: @answer
 
     div class='divider mt-4 mb-4'
       <hr/>
