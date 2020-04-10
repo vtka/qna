@@ -1,17 +1,10 @@
 .row.justify-content-center.mt-3
   .col.col-md-10
+    .question-errors
+      = render 'shared/errors', resource: @question
+
     div class='question mt-3 mb-3'
-      .card class='bg-light'
-        .card-body
-          h1.card-title
-            .title= @question.title
-          p.card-text
-            .body= @question.body
-          p= link_to 'Edit', edit_question_path(@question), class: 'text-primary'
-          p= link_to 'Back', questions_path, class: 'text-primary'
-          - if current_user&.author?(@question)
-              div class='deleteQuestion'
-                p= link_to 'Delete', question_path(@question), method: :delete, class: 'text-danger'
+      = render 'edit_form', class: 'hidden'
 
     div class='divider mt-4 mb-4'
       <hr/>

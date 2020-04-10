@@ -8,6 +8,7 @@ require("@rails/activestorage").start()
 require("jquery")
 
 require("../answers")
+require("../questions")
 
 /* eslint no-console:0 */
 // This file is automatically compiled by Webpack, along with any other files
