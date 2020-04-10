@@ -8,7 +8,7 @@ feature 'User can delete own answers', %q{
   given!(:question) { create(:question, author_id: users.first.id) }
   given!(:answer) { create(:answer, question: question, author_id: users.first.id) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
 
     scenario 'deletes own answer' do
       sign_in(users.first)
@@ -17,8 +17,8 @@ feature 'User can delete own answers', %q{
       within '.deleteAnswer' do
         click_on 'Delete'
       end
-
-      expect(page).to have_content 'Your answer was successfully deleted.'
+      
+      page.driver.browser.switch_to.alert.accept
       expect(page).to_not have_content answer.body
     end
 
