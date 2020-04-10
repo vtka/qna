@@ -36,9 +36,13 @@ feature 'User can choose the best answer', %q{
           expect(page).to_not have_link 'Best answer'
         end
 
+        within "#answer-#{answers.first.id}" do
+          expect(page).to have_link 'Best answer'
+        end
+
         within '.answers' do
           expect(page).to have_css('.best', count: 1)
-          # expect(page.first(:xpath, '//a')).to have_selector ".answer-#{answers.last.id}"
+          page.find("#answer-#{answers.last.id}").has_css?(".best")
         end
       end
     end
@@ -57,5 +61,5 @@ feature 'User can choose the best answer', %q{
       end
     end
   end
-  
+
 end
