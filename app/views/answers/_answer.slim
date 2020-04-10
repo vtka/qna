@@ -1,4 +1,4 @@
-.card class='bg-light' id="answer-#{answer.id}"
+.card class='bg-light' id="answer-#{answer.id}" class=("best border-success" if answer.best?)
     .card-body
       p.card-text
         - if answer.persisted?
@@ -12,7 +12,10 @@
             = f.submit 'Save', class: 'btn btn-primary'
         div.deleteAnswer
           p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger', remote: true, data: { confirm: 'Are your sure?' }
-              
+
+      - if user_signed_in? && current_user&.author?(answer.question) && !answer.best?
+        div.bestAnswer  
+          = link_to 'Best answer', best_answer_path(answer), class: 'btn btn-success', method: :patch, remote: true
 div class='divider mt-4 mb-4'
   <hr/>
       

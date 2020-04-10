@@ -13,7 +13,7 @@
       = render 'shared/errors', resource: @answer
 
     .answers
-      = render @question.answers
+      = render @question.answers.order('best DESC')
 
     div class='divider mt-4 mb-4'
       <hr/>

@@ -102,4 +102,40 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #best' do
+    context 'as the author of the question' do
+      before do
+        sign_in(author)
+        patch :best, params: { id: answer }, format: :js
+      end
+
+      it 'changes best attribute of an answer to true' do
+        answer.reload
+
+        expect(answer).to be_best
+      end
+
+      it 'renders best view' do
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'as another user' do
+      before do
+        sign_in(user)
+        patch :best, params: { id: answer }, format: :js
+      end
+
+      it 'does not change best attribute of an answer to true' do
+        answer.reload
+
+        expect(answer).not_to be_best
+      end
+
+      it 'renders best view' do
+        expect(response).to render_template :best
+      end
+    end
+  end
+
 end

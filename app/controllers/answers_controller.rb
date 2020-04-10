@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[destroy create update]
+  before_action :authenticate_user!, except: %i[destroy create update best]
   before_action :find_question, only: %i[new create]
-  before_action :find_answer, only: %i[destroy update]
+  before_action :find_answer, only: %i[destroy update best]
 
   def show; end
 
@@ -32,6 +32,12 @@ class AnswersController < ApplicationController
       @answer.destroy
     else
       return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
+    end
+  end
+
+  def best
+    if current_user.author?(@answer.question)
+      @answer.best!
     end
   end
 
