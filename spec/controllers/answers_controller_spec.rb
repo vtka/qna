@@ -18,7 +18,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: question }, format: :js }.to change(user.answers, :count).by(1)
       end
 
-      it "redirects to this answer's question's show view" do
+      it "renders create template" do
         post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
         expect(response).to render_template :create
       end
@@ -29,7 +29,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 're-renders show questions view with a form to create an answer' do
+      it 'renders create template' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question, format: :js }
         expect(response).to render_template :create
       end
