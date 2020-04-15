@@ -4,10 +4,7 @@
         - if answer.persisted?
           p= answer.body
       .files
-        - if answer.files.attached?
-          - answer.files.each do |file|
-            p.card-file
-              = link_to file.filename.to_s, url_for(file)
+        = render 'shared/files', resource: answer
 
       - if user_signed_in? && current_user&.author?(answer)
         div.updateAnswer
