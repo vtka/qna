@@ -49,6 +49,20 @@ feature 'User can edit his answer', %q{
         end
       end
 
+      scenario 'edits answer by deleting previously attached file' do
+        within '.answers' do
+          click_on 'Edit'
+          attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb"]
+          click_on 'Save'
+          
+          within '.files' do
+            click_on 'x'
+          end
+
+          expect(page).to have_link 'rails_helper.rb'
+        end
+      end
+
       scenario 'edits answer with invalid params' do
         within '.answers' do
           click_on 'Edit'

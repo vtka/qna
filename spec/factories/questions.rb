@@ -8,7 +8,11 @@ FactoryBot.define do
     end
 
     trait :with_file do
-      files { Rack::Test::UploadedFile.new('spec/support/files/test.txt', 'text/plain') }
+      after :create do |question|
+        file_path = Rails.root.join('spec/support/files', 'test.txt')
+        file = fixture_file_upload(file_path, 'file/txt')
+        question.files.attach(file)
+      end
     end
   end
 end
