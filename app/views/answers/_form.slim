@@ -1,4 +1,6 @@
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
   = f.label :body, 'Your answer'
   = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Your answer'
+  = f.label :files
+  = f.file_field :files, multiple: true, class: 'form-control mt-2 mb-2'
   = f.submit 'Answer', class: 'btn btn-primary mb-5'

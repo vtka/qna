@@ -5,11 +5,19 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
       .title= @question.title
     p.card-text
       .body= @question.body
+    .files
+      - if @question.files.attached?
+        - @question.files.each do |file|
+          p.card-file
+            = link_to file.filename.to_s, url_for(file)
+
     - if current_user&.author?(@question)
         p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
         = form_with model: @question, class: 'hidden edit-question-form', html: { id: "edit-question-#{@question.id}" } do |f|
           = f.text_field :title, autofocus: true, autocomplete: "title", class: 'form-control mb-2', placeholder: 'Title'
           = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Edit your question'
+          = f.label :files
+          = f.file_field :files, multiple: true, class: 'form-control'
           = f.submit 'Save', class: 'btn btn-primary'
         .deleteQuestion
           p= link_to 'Delete', question_path(@question), method: :delete, class: 'text-danger'

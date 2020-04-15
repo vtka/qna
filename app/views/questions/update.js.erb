@@ -3,6 +3,7 @@ $('.question-errors').html("<%= j render 'shared/errors', resource: @question %>
 <% unless @question.errors.present? %>
   $('.question .title').html('<%= j @question.title %>')
   $('.question .body').html('<%= j @question.body %>')
+  $('.question .files').html("<%= j render 'shared/files', resource: @question %>");
   $('.edit-question-link').show();
   $('.edit-question-form').hide();
   $('.question .title').show();

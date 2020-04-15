@@ -16,14 +16,27 @@ feature 'User can create question', %q{
       click_on 'Ask question'
     end
 
-    scenario 'asks question' do
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'Text text text'
-      click_on 'Ask'
+    describe 'fills form with valid params' do
+      background do
+        fill_in 'Title', with: 'Test question'
+        fill_in 'Body', with: 'Text text text'
+      end
 
-      expect(page).to have_content 'Your question was successfully created.'
-      expect(page).to have_content 'Test question'
-      expect(page).to have_content 'Text text text'
+      scenario 'asks question' do
+        click_on 'Ask'
+
+        expect(page).to have_content 'Your question was successfully created.'
+        expect(page).to have_content 'Test question'
+        expect(page).to have_content 'Text text text'
+      end
+
+      scenario 'asks question with attached files' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Ask'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
     end
 
     scenario 'asks question with invalid params' do

@@ -3,12 +3,19 @@
       p.card-text
         - if answer.persisted?
           p= answer.body
+      .files
+        - if answer.files.attached?
+          - answer.files.each do |file|
+            p.card-file
+              = link_to file.filename.to_s, url_for(file)
 
       - if user_signed_in? && current_user&.author?(answer)
         div.updateAnswer
           p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
           = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
             = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Edit your answer'
+            = f.label :files
+            = f.file_field :files, multiple: true, class: 'form-control mt-2 mb-2'
             = f.submit 'Save', class: 'btn btn-primary'
         div.deleteAnswer
           p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger', remote: true, data: { confirm: 'Are your sure?' }
