@@ -24,5 +24,13 @@ module Qna
                        request_specs: false,
                        controller_specs: true
     end
+
+    # CORS configuration for rack-cors gem
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :options]
+      end
+    end
   end
 end
