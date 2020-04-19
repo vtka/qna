@@ -4,9 +4,11 @@ $('.question-errors').html("<%= j render 'shared/errors', resource: @question %>
   $('.question .title').html('<%= j @question.title %>')
   $('.question .body').html('<%= j @question.body %>')
   $('.question .files').html("<%= j render 'shared/files', resource: @question %>");
+  $('.question .links').html("<%= j render 'links/link', resource: @question %>");
   $('.edit-question-link').show();
   $('.edit-question-form').hide();
   $('.question .title').show();
   $('.question .body').show();
   $('.question .back-link').show();
+  $('.question .link-name-cleaner').val('');
 <% end %>

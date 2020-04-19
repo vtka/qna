@@ -6,22 +6,18 @@
       .files
         = render 'shared/files', resource: answer
       .links
-        - answer.links.each do |link|
-          p class="link-#{link.id}"
-            = link_to link.name, link.url
-            - if current_user&.author?(answer)
-              = link_to 'x', link_path(link),
-                          method: :delete,
-                          remote: true,
-                          class: 'text-danger'
+        = render 'links/link', resource: answer
 
       - if user_signed_in? && current_user&.author?(answer)
         div.updateAnswer
-          p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+          p= link_to 'Edit', '#', class: 'edit-answer-link text-warning', data: { answer_id: answer.id }
           = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
             = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Edit your answer'
             = f.label :files
             = f.file_field :files, multiple: true, class: 'form-control mt-2 mb-2'
+            .add-link
+              = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+
             = f.submit 'Save', class: 'btn btn-primary'
         div.deleteAnswer
           p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger', remote: true, data: { confirm: 'Are your sure?' }
