@@ -18,7 +18,7 @@ feature 'User can add link answer', %q{
     fill_in 'Your answer', with: 'Text text text'
   end
 
-  scenario 'User adds link to answer', js: true do
+  scenario 'User adds valid link to answer', js: true do
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
@@ -27,6 +27,21 @@ feature 'User can add link answer', %q{
     within '.answers' do
       expect(page).to have_link 'My gist', href: gist_url
     end
+  end
+
+  scenario 'User adds invalid link to answer', js: true do
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: 'invalid link'
+    end
+
+    click_on 'Answer'
+
+    within '.answer-errors' do
+      expect(page).to have_content 'Links url is not a valid URL'
+    end
+
+    expect(page).to_not have_link 'My gist', href: 'invalid link'
   end
 
   scenario 'User adds multiple links to answer', js: true do
