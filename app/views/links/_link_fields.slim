@@ -1,9 +1,9 @@
 .nested-fields
+  = link_to_remove_association "remove link", f, class: 'text-danger'
+  
   .field
-    = f.label :name, 'Link name'
-    = f.text_field :name, class: 'link-name-cleaner'
+    p
+      = f.text_field :name, class: 'link-name-cleaner form-control mt-2 mb-2', autocomplete: "name", placeholder: 'Link name'
   .field
-    = f.label :url
-    = f.text_field :url, class: 'link-name-cleaner'
-      
-  = link_to_remove_association "remove link", f
+    p
+      = f.text_field :url, class: 'link-name-cleaner form-control mt-2 mb-2', autocomplete: "url", placeholder: 'URL'

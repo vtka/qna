@@ -20,7 +20,7 @@ feature 'User can add link question', %q{
 
   scenario 'User adds valid link to question' do
     fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'URL', with: gist_url
 
     click_on 'Ask'
 
@@ -30,7 +30,7 @@ feature 'User can add link question', %q{
   scenario 'User adds invalid link to question', js: true do
     within all('.nested-fields').last do
       fill_in 'Link name', with: 'My gist'
-      fill_in 'Url', with: 'invalid link'
+      fill_in 'URL', with: 'invalid link'
     end
 
     click_on 'Ask'
@@ -42,14 +42,14 @@ feature 'User can add link question', %q{
   scenario 'User adds multiple links to question', js: true do
     within all('.nested-fields').last do
       fill_in 'Link name', with: 'My gist'
-      fill_in 'Url', with: gist_url
+      fill_in 'URL', with: gist_url
     end
 
     click_on 'add link'
 
     within all('.nested-fields').last do
       fill_in 'Link name', with: 'My google'
-      fill_in 'Url', with: google_url
+      fill_in 'URL', with: google_url
     end
 
     click_on 'Ask'
