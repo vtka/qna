@@ -8,20 +8,44 @@ feature 'User can add link question', %q{
 
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/vtka/4ce6bc87f64e171076c9ac2fb423f6cc' }
+  given(:google_url) { 'https://www.google.kz/' }
 
-  scenario 'User adds link to question' do
+  background do
     sign_in(user)
     visit new_question_path
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Text text text'
+  end
 
+  scenario 'User adds link to question' do
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
     click_on 'Ask'
 
     expect(page).to have_link 'My gist', href: gist_url
+  end
+
+  scenario 'User adds multiple links to question', js: true do
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+    end
+
+    click_on 'add link'
+
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'My google'
+      fill_in 'Url', with: google_url
+    end
+
+    click_on 'Ask'
+
+    within '.question' do
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My google', href: google_url
+    end
   end
 
 end

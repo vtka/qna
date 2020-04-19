@@ -9,13 +9,16 @@ feature 'User can add link answer', %q{
   given(:user) { create(:user) }
   let(:question) { create(:question, author: user) }
   given(:gist_url) { 'https://gist.github.com/vtka/4ce6bc87f64e171076c9ac2fb423f6cc' }
+  given(:google_url) { 'https://www.google.kz/' }
 
-  scenario 'User adds link to question', js: true do
+  background do
     sign_in(user)
     visit question_path(question)
 
     fill_in 'Your answer', with: 'Text text text'
+  end
 
+  scenario 'User adds link to answer', js: true do
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
@@ -23,6 +26,27 @@ feature 'User can add link answer', %q{
 
     within '.answers' do
       expect(page).to have_link 'My gist', href: gist_url
+    end
+  end
+
+  scenario 'User adds multiple links to answer', js: true do
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
+    end
+
+    click_on 'add link'
+
+    within all('.nested-fields').last do
+      fill_in 'Link name', with: 'My google'
+      fill_in 'Url', with: google_url
+    end
+
+    click_on 'Answer'
+
+    within '.answers' do
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My google', href: google_url
     end
   end
 
