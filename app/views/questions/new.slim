@@ -13,12 +13,11 @@
 
   / create partial
   p
-    = f.fields_for :links do |l|
-      p
-        = l.label :name, 'Link name'
-        = l.text_field :name
-      p
-        = l.label :url
-        = l.text_field :url
+    = f.fields_for :links do |link|
+      = render 'links/link_fields', f: link
+
+  .add-link
+    = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+    
   p
     = f.submit 'Ask'

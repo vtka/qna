@@ -1,6 +1,6 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
-import "cocoon";
+import "cocoon-js";
 import '../src/scss/application.scss'
 
 require("@rails/ujs").start()
