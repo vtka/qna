@@ -3,4 +3,14 @@
   = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Your answer'
   = f.label :files
   = f.file_field :files, multiple: true, class: 'form-control mt-2 mb-2'
+  / create partial
+  p
+    = f.fields_for :links do |l|
+      p
+        = l.label :name, 'Link name'
+        = l.text_field :name
+      p
+        = l.label :url
+        = l.text_field :url
+        
   = f.submit 'Answer', class: 'btn btn-primary mb-5'

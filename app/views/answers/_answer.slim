@@ -5,6 +5,9 @@
           p= answer.body
       .files
         = render 'shared/files', resource: answer
+      .links
+        - answer.links.each do |link|
+          p= link_to link.name, link.url
 
       - if user_signed_in? && current_user&.author?(answer)
         div.updateAnswer
