@@ -18,13 +18,24 @@ feature 'User can add link question', %q{
     fill_in 'Body', with: 'Text text text'
   end
 
-  scenario 'User adds valid link to question' do
+  scenario 'User adds valid link to question', js: true do
     fill_in 'Link name', with: 'My gist'
     fill_in 'URL', with: gist_url
 
     click_on 'Ask'
 
     expect(page).to have_link 'My gist', href: gist_url
+    save_and_open_page
+  end
+
+  scenario 'User adds valid gist link to question', js: true do
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'URL', with: gist_url
+
+    click_on 'Ask'
+
+    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_css('.gist')
   end
 
   scenario 'User adds invalid link to question', js: true do
