@@ -29,6 +29,18 @@ feature 'User can add link answer', %q{
     end
   end
 
+  scenario 'User adds valid gist link to answer', js: true do
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'URL', with: gist_url
+
+    click_on 'Answer'
+
+    within '.answers' do
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_css('.gist')
+    end
+  end
+
   scenario 'User adds invalid link to answer', js: true do
     within all('.nested-fields').last do
       fill_in 'Link name', with: 'My gist'
