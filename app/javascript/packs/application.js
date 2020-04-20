@@ -1,6 +1,7 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import "cocoon-js";
+import "gist-embed/dist/gist-embed.min.js"
 // import postscribe from 'postscribe';
 import '../src/scss/application.scss'
 
@@ -12,6 +13,7 @@ require("jquery")
 
 require("../answers")
 require("../questions")
+require("../embed")
 
 /* eslint no-console:0 */
 // This file is automatically compiled by Webpack, along with any other files
