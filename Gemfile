@@ -30,6 +30,8 @@ gem 'rack-cors'
 gem 'cocoon'
 # Validate links
 gem 'validate_url'
+# Octokit
+gem 'octokit', '~> 4.0'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

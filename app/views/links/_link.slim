@@ -9,3 +9,6 @@
                     method: :delete,
                     remote: true,
                     class: 'text-danger'
+      - if link.gist?
+        script src="#{link.url}.js"
+        

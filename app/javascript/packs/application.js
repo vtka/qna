@@ -1,6 +1,7 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import "cocoon-js";
+// import postscribe from 'postscribe';
 import '../src/scss/application.scss'
 
 require("@rails/ujs").start()
