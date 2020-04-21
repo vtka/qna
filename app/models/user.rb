@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   has_many :questions, foreign_key: 'author_id'
   has_many :answers, foreign_key: 'author_id'
+  has_many :badges, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

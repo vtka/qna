@@ -14,6 +14,8 @@ class Answer < ApplicationRecord
     ActiveRecord::Base.transaction do
       question.answers.update_all(best: false)
       update!(best: true)
+
+      question.set_badge!(author)
     end
   end
 

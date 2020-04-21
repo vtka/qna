@@ -1,0 +1,15 @@
+.container
+  h5.mt-4= 'Earned badges'
+
+  table.table.table-hover
+    thead
+      tr
+        th scope="col" = 'Name'
+        th scope="col" = 'Reference'
+        th scope="col" = 'Badge'
+    tbody
+      - current_user&.badges.each do |badge|
+        tr
+          td.align-middle= badge.name
+          td.align-middle= badge.question.title
+          td.align-middle= image_tag badge.image, size: '50x50'

@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   resources :attachments, only: %i[destroy]
 
+  resources :badges, only: %i[index]
+
   resources :links, only: %i[destroy]
 
   root to: "questions#index"

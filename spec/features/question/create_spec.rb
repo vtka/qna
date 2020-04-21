@@ -37,6 +37,20 @@ feature 'User can create question', %q{
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
+
+      scenario 'asks question with badge attached' do
+        within '.badge-fields' do
+          fill_in 'Badge title', with: 'Some Bage Title'
+          attach_file 'Image', "#{Rails.root}/spec/rails_helper.rb"
+        end
+  
+        click_on 'Ask'
+  
+        expect(page).to have_content 'Your question was successfully created.'
+        expect(page).to have_content 'Test question'
+        expect(page).to have_content 'Text text text'
+        expect(page).to have_content 'Some Bage Title'
+      end
     end
 
     scenario 'asks question with invalid params' do

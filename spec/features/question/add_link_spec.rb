@@ -25,7 +25,6 @@ feature 'User can add link question', %q{
     click_on 'Ask'
 
     expect(page).to have_link 'My gist', href: gist_url
-    save_and_open_page
   end
 
   scenario 'User adds valid gist link to question', js: true do

@@ -10,14 +10,23 @@
   p
     = f.label :files
     = f.file_field :files, multiple: true
-
-  / create partial
   p
     = f.fields_for :links do |link|
       = render 'links/link_fields', f: link
 
   .add-link
     = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+  
+  .badge-fields
+    = f.fields_for :badge do |badge|
+      p
+        = badge.label :name, 'Badge title'
+        ':
+        = badge.text_field :name
+      p
+        = badge.label :image
+        ':
+        = badge.file_field :image
     
   p
     = f.submit 'Ask'

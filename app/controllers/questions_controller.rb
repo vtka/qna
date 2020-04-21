@@ -14,6 +14,7 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
     @question.links.new
+    @question.build_badge
   end
 
   def edit; end
@@ -52,6 +53,7 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body, 
                                      files: [],
-                                     links_attributes: [:name, :url, :_destroy])
+                                     links_attributes: [:name, :url, :_destroy],
+                                     badge_attributes: [:name, :image])
   end
 end
