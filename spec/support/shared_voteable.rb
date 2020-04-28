@@ -9,7 +9,7 @@ RSpec.shared_examples 'voteable' do
 
   let(:voteable) do
     if model.to_s == 'Answer'
-      question = create(:question, user: author)
+      question = create(:question, author: author)
       create(model.to_s.underscore.to_sym, question: question, author: author)
     else
       create(model.to_s.underscore.to_sym, author: author)

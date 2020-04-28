@@ -25,6 +25,10 @@
     - if user_signed_in? && current_user&.author?(answer.question) && !answer.best?
       div.bestAnswer  
         = link_to 'Best answer', best_answer_path(answer), class: 'btn btn-success', method: :patch, remote: true
+    
+    .vote
+      = render partial: 'votes/vote', locals: { resource: answer }
+      
 div class='divider mt-4 mb-4'
   <hr/>
       
