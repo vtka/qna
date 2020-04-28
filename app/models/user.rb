@@ -5,12 +5,17 @@ class User < ApplicationRecord
   has_many :questions, foreign_key: 'author_id'
   has_many :answers, foreign_key: 'author_id'
   has_many :badges, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
   def author?(object)
     self.id == object.author_id
+  end
+
+  def voted?(resource)
+    votes.exists?(voteable_id: resource)
   end
 
 end

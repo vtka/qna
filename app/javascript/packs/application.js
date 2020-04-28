@@ -14,6 +14,7 @@ require("jquery")
 require("../answers")
 require("../questions")
 require("../embed")
+require("../votes")
 
 /* eslint no-console:0 */
 // This file is automatically compiled by Webpack, along with any other files

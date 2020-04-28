@@ -24,6 +24,9 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
           = f.submit 'Save', class: 'btn btn-primary'
         .deleteQuestion
           p= link_to 'Delete', question_path(@question), method: :delete, class: 'text-danger'
+
+    .vote
+      = render partial: 'votes/vote', locals: { resource: @question }
       
     .badge.card.bg-white
       - if @question.badge.present? && current_user&.author?(@question)
