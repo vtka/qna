@@ -1,5 +1,5 @@
 class Answer < ApplicationRecord
-  include Voteable
+  include Votable
   
   belongs_to :question
   belongs_to :author, class_name: 'User'

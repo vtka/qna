@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.shared_examples 'voteable' do
+RSpec.shared_examples 'votable' do
   it { should have_many(:votes).dependent(:destroy) }
 
   let(:author) { create(:user) }
   let(:users) { create_list(:user, 3) }
   let!(:model) { described_class }
 
-  let(:voteable) do
+  let(:votable) do
     if model.to_s == 'Answer'
       question = create(:question, author: author)
       create(model.to_s.underscore.to_sym, question: question, author: author)
@@ -17,7 +17,7 @@ RSpec.shared_examples 'voteable' do
   end
 
   describe 'Vote Positive' do
-    before { voteable.positive(users.first) }
+    before { votable.positive(users.first) }
 
     it 'changed score' do
       expect(Vote.last.score).to eq 1
@@ -27,13 +27,13 @@ RSpec.shared_examples 'voteable' do
       expect(Vote.last.user).to eq users.first
     end
 
-    it 'voteable is a voteable' do
-      expect(Vote.last.voteable).to eq voteable
+    it 'votable is a votable' do
+      expect(Vote.last.votable).to eq votable
     end
   end
 
   describe 'Vote Negative' do
-    before { voteable.negative(users.first) }
+    before { votable.negative(users.first) }
 
     it 'changed score' do
       expect(Vote.last.score).to eq -1
@@ -43,14 +43,14 @@ RSpec.shared_examples 'voteable' do
       expect(Vote.last.user).to eq users.first
     end
 
-    it 'voteable is a voteable' do
-      expect(Vote.last.voteable).to eq voteable
+    it 'votable is a votable' do
+      expect(Vote.last.votable).to eq votable
     end
   end
 
   it 'check rating score' do
-    users.each { |user| voteable.positive(user) }
+    users.each { |user| votable.positive(user) }
 
-    expect(voteable.rating).to eq 3
+    expect(votable.rating).to eq 3
   end
 end

@@ -1,8 +1,8 @@
-module Voteable
+module Votable
   extend ActiveSupport::Concern
 
   included do
-    has_many :votes, dependent: :destroy, as: :voteable
+    has_many :votes, dependent: :destroy, as: :votable
   end
 
   def positive(user)

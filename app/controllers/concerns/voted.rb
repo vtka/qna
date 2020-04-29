@@ -2,27 +2,27 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_voteable, only: %i[positive negative revote]
+    before_action :find_votable, only: %i[positive negative revote]
   end
 
   def positive
-    unless current_user&.author?(@voteable)
-      @voteable.positive(current_user)
+    unless current_user&.author?(@votable)
+      @votable.positive(current_user)
 
       render_json
     end
   end
 
   def negative
-    unless current_user&.author?(@voteable)
-      @voteable.negative(current_user)
+    unless current_user&.author?(@votable)
+      @votable.negative(current_user)
 
       render_json
     end
   end
 
   def revote
-    @voteable.votes.find_by(user_id: current_user)&.destroy
+    @votable.votes.find_by(user_id: current_user)&.destroy
 
     render_json
   end
@@ -33,15 +33,15 @@ module Voted
     controller_name.classify.constantize
   end
 
-  def find_voteable
-    @voteable = model_klass.find(params[:id])
+  def find_votable
+    @votable = model_klass.find(params[:id])
   end
 
   def render_json(*flash)
     render json: {
-                   score: @voteable.rating,
-                   klass: @voteable.class.to_s,
-                   id: @voteable.id,
+                   score: @votable.rating,
+                   klass: @votable.class.to_s,
+                   id: @votable.id,
                    flash: flash
                  }
   end
