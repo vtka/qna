@@ -15,7 +15,7 @@ class User < ApplicationRecord
   end
 
   def voted?(resource)
-    votes.exists?(voteable_id: resource)
+    votes.exists?(voteable: resource)
   end
 
 end
