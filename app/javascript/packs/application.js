@@ -2,7 +2,6 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import "cocoon-js";
 import "gist-embed/dist/gist-embed.min.js"
-// import postscribe from 'postscribe';
 import '../src/scss/application.scss'
 
 require("@rails/ujs").start()
@@ -17,6 +16,3 @@ require("../embed")
 require("../votes")
 
 console.log('Hello World from Webpacker')
-
-// var App = App || {};
-// App.cable = ActionCable.createConsumer();
