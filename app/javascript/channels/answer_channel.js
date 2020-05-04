@@ -1,26 +1,15 @@
-$(document).on('turbolinks:load', function(){
-  if (document.querySelector('.answers')) {
-    App.answersSubscription = App.cable.subscriptions.create('AnswersChannel', {
-      connected: function() {
-        questionId = $('.question').attr('id').split("-")[1];
-        this.perform('follow', {
-          question_id: questionId
-        });
-      },
+import consumer from "./consumer"
 
-      received: function(data) {
-        if (gon.current_user !== data.answer.author_id) {
-          $('.answers').append(JST['templates/answer']({
-            answer: data.answer,
-            files: data.files,
-            links: data.links
-          }));
-        }
-      }
-    });
-  } else {
-    if (App.answersSubscription) {
-      App.answersSubscription.unsubscribe();
-    }
+consumer.subscriptions.create("AnswerChannel", {
+  connected() {
+    // Called when the subscription is ready for use on the server
+  },
+
+  disconnected() {
+    // Called when the subscription has been terminated by the server
+  },
+
+  received(data) {
+    // Called when there's incoming data on the websocket for this channel
   }
 });

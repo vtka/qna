@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[destroy create update best]
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i[destroy update best]
-  after_action :publish_answer, only: :create
+  after_action :publish_answer, only: %i[create]
 
   def show; end
 
@@ -59,14 +59,25 @@ class AnswersController < ApplicationController
                                    links_attributes: [:name, :url, :_destroy])
   end
 
+  def answer_files
+    @answer.files.map do |file|
+          {
+            id: file,
+            name: file.filename.to_s,
+            url: url_for(file) 
+          }
+    end
+  end
+
   def publish_answer
     return if @answer.errors.any?
 
     ActionCable.server.broadcast(
-      "questions/#{@answer.question.id}/answers",
-      answer: @answer,
-      links: @answer.links,
-      files: @answer.files
-    )
+      "question-#{@question.id}-answers",
+        answer: @answer,
+        question_author: @answer.question.author,
+        files: answer_files,
+        links: @answer.links
+        )
   end
 end
