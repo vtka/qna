@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[destroy create update best]
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i[destroy update best]
+  after_action :publish_answer, only: :create
 
   def show; end
 
@@ -56,5 +57,16 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body, 
                                    files: [],
                                    links_attributes: [:name, :url, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    ActionCable.server.broadcast(
+      "questions/#{@answer.question.id}/answers",
+      answer: @answer,
+      links: @answer.links,
+      files: @answer.files
+    )
   end
 end

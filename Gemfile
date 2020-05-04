@@ -33,6 +33,9 @@ gem 'validate_url'
 # Octokit
 gem 'octokit', '~> 4.0'
 
+# For Action Cable rendering
+gem 'gon'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
