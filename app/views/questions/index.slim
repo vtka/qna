@@ -2,11 +2,12 @@
   h5.mt-4= t('.header')
   = link_to 'Ask question', new_question_path, class: "btn btn-primary mb-2"
   = render 'shared/errors', resource: @question
-  table.table.table-hover
-    thead
-      tr
-        th scope="col" = t('questions.index.title')
-        th scope="col" = t('questions.index.body')
-        th scope="col" = t('questions.index.actions')
-    tbody
-      = render @questions
+  .questions
+    table.table.table-hover
+      thead
+        tr
+          th scope="col" = t('questions.index.title')
+          th scope="col" = t('questions.index.body')
+          th scope="col" = t('questions.index.actions')
+      tbody
+        = render @questions

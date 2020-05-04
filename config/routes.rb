@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  mount ActionCable.server => '/cable'
+
   devise_for :users
 
   resources :attachments, only: %i[destroy]

@@ -16,6 +16,9 @@ module Qna
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # config.action_cable.disable_request_forgery_protection = false
+    # config.action_cable.mount_path = '/websocket'
+
     config.generators do |g|
       g.test_framework :rspec,
                        view_specs: false,

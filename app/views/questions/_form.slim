@@ -2,6 +2,7 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
 
 .card class='bg-light'
   .card-body
+    p.card-text Author: #{@question.author.email}
     h1.card-title
       .title= @question.title
     p.card-text
