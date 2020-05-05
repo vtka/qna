@@ -59,25 +59,15 @@ class AnswersController < ApplicationController
                                    links_attributes: [:name, :url, :_destroy])
   end
 
-  def answer_files
-    @answer.files.map do |file|
-          {
-            id: file,
-            name: file.filename.to_s,
-            url: url_for(file) 
-          }
-    end
-  end
-
   def publish_answer
     return if @answer.errors.any?
-
+    
     ActionCable.server.broadcast(
-      "question-#{@question.id}-answers",
-        answer: @answer,
-        question_author: @answer.question.author,
-        files: answer_files,
-        links: @answer.links
+      'answer_channel',
+      ApplicationController.render(
+        partial: 'answers/answer', 
+        locals: { answer: @answer }
         )
+      )
   end
 end
