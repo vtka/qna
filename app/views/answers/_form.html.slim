@@ -1,0 +1,18 @@
+.new-answer
+  .answer-errors
+    = render 'shared/errors', resource: answer
+
+  = form_with model: [question, answer] do |f|
+    = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Your answer'
+    div class="custom-file"
+      = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control custom-file-input mt-2', id: "validatedCustomFile"
+      = f.label 'Attach files', class: 'custom-file-label', for: 'validatedCustomFile'
+    div class="mt-2"
+      | Links:
+      #links
+        = f.fields_for :links do |link|
+          = render 'shared/link_fields', f: link
+        .links
+          = link_to_add_association octicon(:plus), f, :links, partial: 'shared/link_fields', title: "Add link"
+    div class="text-right"
+    = f.submit 'Answer', class: 'btn btn-primary mt-2 mb-5'

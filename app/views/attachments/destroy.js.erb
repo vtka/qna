@@ -1,1 +1,3 @@
-$('.attachment-<%= @attachment.id %>').remove();
+<% unless attachment.persisted? %>
+  $('<%= ".file-#{attachment.id}" %>').remove();
+<% end %>

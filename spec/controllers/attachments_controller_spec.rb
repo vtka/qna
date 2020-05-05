@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AttachmentsController, type: :controller do
-  let(:author) { create(:user) }
-  let(:question) { create(:question, :with_file, author: author) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, :with_file, author: user) }
 
-  before { login(author) }
+  before { log_in(user) }
 
   describe 'DELETE #destroy' do
     context 'question' do
@@ -20,9 +20,9 @@ RSpec.describe AttachmentsController, type: :controller do
       end
 
       context 'not the author of the question' do
-        let(:user) { create(:user) }
+        let(:user_two) { create(:user) }
 
-        before { login(user) }
+        before { log_in(user_two) }
 
         it 'does not delete an attachment' do
           expect { delete :destroy, params: { id: question.files.first }, format: :js }.not_to change(question.files, :count)
@@ -36,7 +36,7 @@ RSpec.describe AttachmentsController, type: :controller do
     end
 
     context 'answer' do
-      let(:answer) { create(:answer, :with_file, question: question, author: author) }
+      let(:answer) { create(:answer, :with_file, question: question, author: user) }
 
       context 'user is author' do
         it 'deletes an attachment' do
@@ -50,9 +50,9 @@ RSpec.describe AttachmentsController, type: :controller do
       end
 
       context 'not the author of the answer' do
-        let(:user) { create(:user) }
+        let(:user_two) { create(:user) }
 
-        before { login(user) }
+        before { log_in(user_two) }
 
         it 'does not delete an attachment' do
           expect { delete :destroy, params: { id: answer.files.first }, format: :js }.not_to change(answer.files, :count)

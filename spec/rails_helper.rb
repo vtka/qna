@@ -1,11 +1,12 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../config/environment', __dir__)
+require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'webdrivers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -31,15 +32,21 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  # Simpler syntax without "FactoryBot.x"
   config.include FactoryBot::Syntax::Methods
+  # Auto sign in for controller test
   config.include Devise::Test::ControllerHelpers, type: :controller
+
+  # Custom helpers
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
 
-  include ActionDispatch::TestProcess
+  # Use Chrome for JS tests
+  Capybara.javascript_driver = :selenium_chrome_headless
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -52,7 +59,7 @@ RSpec.configure do |config|
   # You can disable this behaviour by removing the line below, and instead
   # explicitly tag your specs with their type, e.g.:
   #
-  #     RSpec.describe UsersController, type: :controller do
+  #     RSpec.describe UsersController, :type => :controller do
   #       # ...
   #     end
   #
@@ -64,6 +71,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
   config.after(:all) do
     FileUtils.rm_rf("#{Rails.root}/tmp/storage")
   end

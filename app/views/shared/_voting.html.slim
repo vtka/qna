@@ -1,0 +1,14 @@
+.upvote.text-center
+  = link_to polymorphic_path(resource, action: :upvote), title: 'Upvote', method: :patch, remote: true, data: { type: :json } do
+    - if (resource.upvoted?(current_user) && current_user.present?) || current_user&.author_of?(resource)
+      = octicon 'arrow-up', height: 24, class: 'upvote-button upvoted'
+    - else
+      = octicon 'arrow-up', height: 24, class: 'upvote-button no-vote'
+.votecount.text-center.mt-1
+  = resource.votecount
+.downvote.text-center
+  = link_to polymorphic_path(resource, action: :downvote), title: 'Downvote', method: :patch, remote: true, data: { type: :json } do
+    - if resource.downvoted?(current_user) && current_user.present?
+      = octicon 'arrow-down', height: 24, class: 'downvote-button downvoted'
+    - else
+      = octicon 'arrow-down', height: 24, class: 'downvote-button no-vote'

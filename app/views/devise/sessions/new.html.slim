@@ -1,0 +1,18 @@
+.row.justify-content-center.mt-3
+  .col.col-md-4
+    = form_for(resource, as: resource_name, url: session_path(resource_name), class: 'form-signin', html: { method: :post }) do |f|
+
+      h1.h1.mb-3.font-weight-normal Sign in
+
+      = f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: 'Email address'
+      = f.password_field :password, autocomplete: "current-password", class: 'form-control', placeholder: 'Password'
+
+      - if devise_mapping.rememberable?
+        .custom-control.custom-checkbox.mt-1.mb-3.text-center
+          = f.check_box :remember_me, class: 'custom-control-input', id: 'customCheck1'
+          = f.label :remember_me, class: 'custom-control-label', for: 'customCheck1'
+
+      = f.submit 'Sign in', class: 'btn btn-lg btn-primary btn-block'
+
+    p.mt-4.mb-3
+      = render "devise/shared/links"

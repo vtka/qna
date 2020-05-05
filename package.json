@@ -1,27 +1,5 @@
 {
   "name": "qna",
   "private": true,
-  "dependencies": {
-    "@primer/octicons": "^9.6.0",
-    "@rails/actioncable": "^6.0.0",
-    "@rails/activestorage": "^6.0.0",
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "4.2.2",
-    "bootstrap": "4.1.1",
-    "cocoon": "^0.1.1",
-    "cocoon-js": "0.0.5",
-    "cocoon-rails": "^1.2.6",
-    "gist-embed": "^1.0.4",
-    "gist-simple": "^1.0.1",
-    "jquery": "^3.4.1",
-    "jquery-ujs": "^1.2.2",
-    "popper.js": "^1.16.1",
-    "postscribe": "^2.0.8",
-    "turbolinks": "^5.2.0",
-    "webpack-merge": "^4.2.2"
-  },
-  "version": "0.1.0",
-  "devDependencies": {
-    "webpack-dev-server": "^3.10.3"
-  }
+  "dependencies": {}
 }

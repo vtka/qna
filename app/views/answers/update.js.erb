@@ -1,6 +1,8 @@
-$('.answer-errors').html("<%= j render 'shared/errors', resource: @answer %>");
+$('<%= "#answer-#{answer.id}" %> .answer-edit-errors').html('<%= render 'shared/errors', resource: answer %>');
 
-<% if !@answer.errors.present? %>
-  $('.answers').html('<%= j render @question.answers.order(:created_at) %>');
-  window.GistEmbed.init()
+<% unless answer.errors.present? %>
+  $('<%= "#answer-#{answer.id}" %>').replaceWith('<%= j render answer %>')
+  $('.<%= "#answer-#{answer.id}" %> .files').html('<%= j render 'shared/files', resource: answer %>');
+  $('.<%= "#answer-#{answer.id}" %> .links').html('<%= j render 'shared/links', resource: answer %>');
+  $('.answer .body').show();
 <% end %>

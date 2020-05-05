@@ -1,0 +1,18 @@
+.question-edit-form
+  .question-edit-errors
+    = render 'shared/errors', resource: question
+
+  = form_with model: question, class: 'hidden', html: { id: "edit-question" } do |f|
+    = f.text_field :title, autofocus: true, autocomplete: "title", class: 'form-control mb-2', placeholder: 'Title'
+    = f.text_area :body, autocomplete: "body", class: 'form-control mb-2', placeholder: 'Description'
+    div class="custom-file"
+      = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control custom-file-input mt-2', id: "validatedCustomFile"
+      = f.label 'Attach files', class: 'custom-file-label', for: 'validatedCustomFile'
+    div class="mt-2"
+    | Links:
+    #links
+      = f.fields_for :links do |link|
+        = render 'shared/link_fields', f: link
+      .links
+        = link_to_add_association octicon(:plus), f, :links, partial: 'shared/link_fields', title: "Add link"
+    = f.submit 'Save', class: 'btn btn-primary mt-2'

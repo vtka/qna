@@ -1,30 +1,21 @@
-require 'features_helper'
+require 'rails_helper'
 
 feature 'User can sign up', %q{
   In order to ask questions
+  As an unauthenticated user
+  I'd like to be able to create an account
 } do
 
-  background { visit new_user_registration_path }
-
-  describe 'Registered user' do
-    given(:user) { create(:user) }
-
-    scenario 'tries to sign up' do
-      fill_in 'Email', with: user.email
-      fill_in 'Password', with: user.password
-      click_on 'Sign up'
-
-      expect(page).to have_content 'Email has already been taken'
-    end
-  end
-
   scenario 'Unregistered user tries to sign up' do
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '12345678'
-    fill_in 'Password confirmation', with: '12345678'
+    visit root_path
+    click_on 'Sign in'
+    click_on 'Create an account'
 
-    click_on 'Sign up'
+    fill_in 'user_email', with: 'user@test.com'
+    fill_in 'user_password', with: '12345678'
+    fill_in 'user_password_confirmation', with: '12345678'
+    click_on 'Create an account'
 
-    expect(page).to have_content 'You have signed up successfully.'
+    expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 end

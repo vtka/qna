@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
-# be faster and is potentially less error prone than running all of your
-# migrations from scratch. Old migrations may fail to apply correctly if those
-# migrations use external dependencies or application code.
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_131931) do
+ActiveRecord::Schema.define(version: 2019_05_12_113742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,24 +37,24 @@ ActiveRecord::Schema.define(version: 2020_04_28_131931) do
   end
 
   create_table "answers", force: :cascade do |t|
-    t.text "body", null: false
-    t.bigint "question_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.text "body"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "author_id"
-    t.boolean "best", default: false, null: false
+    t.boolean "accepted", default: false, null: false
     t.index ["author_id"], name: "index_answers_on_author_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
-  create_table "badges", force: :cascade do |t|
-    t.string "name", null: false
-    t.bigint "question_id"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["question_id"], name: "index_badges_on_question_id"
-    t.index ["user_id"], name: "index_badges_on_user_id"
+  create_table "awards", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "question_id", null: false
+    t.bigint "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_awards_on_question_id", unique: true
+    t.index ["recipient_id"], name: "index_awards_on_recipient_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -62,23 +62,23 @@ ActiveRecord::Schema.define(version: 2020_04_28_131931) do
     t.string "url"
     t.string "linkable_type"
     t.bigint "linkable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id"
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string "title", null: false
-    t.text "body", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "author_id"
     t.index ["author_id"], name: "index_questions_on_author_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -89,12 +89,13 @@ ActiveRecord::Schema.define(version: 2020_04_28_131931) do
   end
 
   create_table "votes", force: :cascade do |t|
-    t.integer "score", default: 0, null: false
+    t.integer "direction", default: 0, null: false
     t.string "votable_type"
     t.bigint "votable_id"
     t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "votable_type", "votable_id"], name: "index_votes_on_user_id_and_votable_type_and_votable_id", unique: true
     t.index ["user_id"], name: "index_votes_on_user_id"
     t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
   end
@@ -102,8 +103,8 @@ ActiveRecord::Schema.define(version: 2020_04_28_131931) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", column: "author_id"
-  add_foreign_key "badges", "questions"
-  add_foreign_key "badges", "users"
+  add_foreign_key "awards", "questions"
+  add_foreign_key "awards", "users", column: "recipient_id"
   add_foreign_key "questions", "users", column: "author_id"
   add_foreign_key "votes", "users"
 end

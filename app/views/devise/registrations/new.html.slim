@@ -1,0 +1,27 @@
+= devise_error_messages!
+
+.row.justify-content-center.mt-3
+  .col.col-md-4
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'form-signup') do |f|
+
+      h1.h1.mb-3.font-weight-normal Create an Account
+
+      = f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'Email address'
+
+      - if @minimum_password_length
+        - password_chars = @minimum_password_length.to_s + ' characters'
+      - else
+        - password_chars = ""
+      = f.password_field :password, class: 'form-control password-field', placeholder: "Password (#{password_chars})"
+
+      .input-group.mb-3
+        = f.password_field :password_confirmation, class: 'form-control password-confirmation-field', placeholder: "Confirm password", 'aria-describedby' => 'basic-addon2'
+        .input-group-append
+          span#basic-addon2.input-group-text.password-icon-field.hidden
+            = octicon "check", class: 'text-success hidden'
+            = octicon "alert", class: 'text-danger hidden'
+
+      = f.submit 'Create an account', class: 'btn btn-lg btn-primary btn-block'
+
+    p.mt-4.mb-3
+      = render "devise/shared/links"

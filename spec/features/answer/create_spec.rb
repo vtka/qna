@@ -1,56 +1,55 @@
-require 'features_helper'
+require 'rails_helper'
 
-feature 'User can create answer', %q{
-    In order to provide answer for the community
-    As an authenticated user
-    I'd like to be able to answer questions
+feature 'User can create answers', %q{
+  In order to get help community
+  As an authenticated user
+  I'd like to be able to answer a question directly on its page
 } do
 
   given(:user) { create(:user) }
-  let(:question) { create(:question, author: user) }
+  given!(:question) { create(:question, author: user) }
 
   describe 'Authenticated user', js: true do
     background do
       sign_in(user)
-
-      visit question_path(question)
+      visit questions_path
+      click_on question.title
     end
 
-    scenario 'gives answer' do
+    scenario 'answers a question' do
       fill_in 'Your answer', with: 'Text text text'
       click_on 'Answer'
 
-      expect(current_path).to eq question_path(question)
       within '.answers' do
         expect(page).to have_content 'Text text text'
       end
     end
 
-    scenario 'gives answer with attached files' do
-      fill_in 'Your answer', with: 'Text text text'
-      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+    scenario 'answers a question with errors' do
       click_on 'Answer'
 
-      expect(current_path).to eq question_path(question)
+      expect(page).to have_content "Body can't be blank"
+    end
+
+    scenario 'answers a question with attached files' do
+      fill_in 'Your answer', with: 'Text text text'
+
+      within '.new-answer' do
+        attach_file 'Attach files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"], visible: false
+        click_on 'Answer'
+      end
+
       within '.answers' do
-        expect(page).to have_content 'Text text text'
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
     end
-
-    scenario 'gives answer with invalid params' do
-      click_on 'Answer'
-
-      expect(page).to have_content "Body can't be blank" 
-    end
-
   end
 
-  scenario 'Unauthenticated user tries to answer the question' do
-    visit question_path(question)
+  scenario 'Unauthenticated user tries to answer a question' do
+    visit questions_path
+    click_on question.title
 
     expect(page).to_not have_content 'Answer'
   end
-
 end

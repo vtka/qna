@@ -1,17 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe LinksController, type: :controller do
-  let(:author) { create(:user) }
-  let(:question) { create(:question, author: author) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
 
-  before { login(author) }
+  before { log_in(user) }
 
   describe 'DELETE #destroy' do
     context 'question' do
       let!(:question_link) { create(:link, linkable: question) }
 
       context 'user is author' do
-        it 'deletes a link' do
+        it 'deletes link' do
           expect { delete :destroy, params: { id: question_link.id }, format: :js }.to change(question.links, :count).by(-1)
         end
 
@@ -22,11 +22,11 @@ RSpec.describe LinksController, type: :controller do
       end
 
       context 'not the author of the question' do
-        let(:user) { create(:user) }
+        let(:user_two) { create(:user) }
 
-        before { login(user) }
+        before { log_in(user_two) }
 
-        it 'does not delete an attachment' do
+        it 'does not delete link' do
           expect { delete :destroy, params: { id: question_link.id }, format: :js }.not_to change(question.links, :count)
         end
 
@@ -38,12 +38,11 @@ RSpec.describe LinksController, type: :controller do
     end
 
     context 'answer' do
+      let(:answer) { create(:answer, question: question, author: user) }
       let!(:answer_link) { create(:link, linkable: answer) }
 
-      let(:answer) { create(:answer, :with_file, question: question, author: author) }
-
       context 'user is author' do
-        it 'deletes an attachment' do
+        it 'deletes link' do
           expect { delete :destroy, params: { id: answer_link.id }, format: :js }.to change(answer.links, :count).by(-1)
         end
 
@@ -54,11 +53,11 @@ RSpec.describe LinksController, type: :controller do
       end
 
       context 'not the author of the answer' do
-        let(:user) { create(:user) }
+        let(:user_two) { create(:user) }
 
-        before { login(user) }
+        before { log_in(user_two) }
 
-        it 'does not delete an attachment' do
+        it 'does not delete link' do
           expect { delete :destroy, params: { id: answer_link.id }, format: :js }.not_to change(answer.links, :count)
         end
 

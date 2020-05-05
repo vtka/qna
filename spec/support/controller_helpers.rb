@@ -1,5 +1,5 @@
 module ControllerHelpers
-  def login(user)
+  def log_in(user)
     @request.env['devise.mapping'] = Devise.mappings[:user]
     sign_in(user)
   end

@@ -1,3 +1,0 @@
-<% if @answer.best? %>
-  $('.answers').html('<%= j render @answer.question.answers.order('best DESC') %>')
-<% end %>

@@ -1,0 +1,9 @@
+.card.mb-3
+  = image_tag url_for(award.image), class: 'card-img-top', src: "..."
+  .card-body
+    h5.card-title
+      = award.title
+    p.card-text
+      | Best answer for:
+      br
+      = link_to award.question.title, question_path(award.question)

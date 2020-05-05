@@ -1,0 +1,4 @@
+<% if answer.accepted? %>
+  $('.answers').html('<%= j render answer.question.answers %>')
+  $('.answers').prepend($('.accepted'))
+<% end %>

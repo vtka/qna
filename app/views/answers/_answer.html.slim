@@ -1,0 +1,38 @@
+.answer.mt-3.mb-3 class=("accepted" if answer.accepted?) id="answer-#{answer.id}"
+  .voting.float-left.mt-2.mr-3
+    = render 'shared/voting', resource: answer
+  .card.bg-light class=("text-success border-success" if answer.accepted?)
+    .card-body
+      p.card-text
+        .body= answer.body
+      .files
+        = render 'shared/files', resource: answer
+      .links
+        = render 'shared/links', resource: answer
+
+      .answer-edit-errors
+      = render 'shared/errors', resource: answer
+
+      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+        = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Your answer'
+        .custom-file
+          = f.file_field :files, multiple: true, direct_upload: true, class: 'form-control custom-file-input mt-2', id: "validatedCustomFile"
+          = f.label 'Attach files', class: 'custom-file-label', for: 'validatedCustomFile'
+        .mt-2
+          | Links:
+          #links
+            = f.fields_for :links do |link|
+              = render 'shared/link_fields', f: link
+            .links
+              = link_to_add_association octicon(:plus), f, :links, partial: 'shared/link_fields', title: "Add link"
+        = f.submit 'Save', class: 'btn btn-primary mt-2'
+
+      .answer-links.mt-4
+        - if current_user&.author_of?(answer.question) && !answer.accepted?
+            = link_to 'Accept this answer', accept_answer_path(answer), class: 'mr-2', method: :patch, remote: true, data: { confirm: 'Do you want to accept this answer?' }
+
+      .answer-author-links.mt-1
+        - if current_user&.author_of?(answer)
+            = link_to 'Edit', '#', class: 'edit-answer-link mr-2', data: { answer_id: answer.id }
+            = link_to 'Delete', answer_path(answer), class: 'text-danger', method: :delete, remote: true, data: { confirm: 'Are your sure?' }
+

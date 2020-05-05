@@ -3,48 +3,18 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
+  it { should have_many(:awards).with_foreign_key('recipient_id').dependent(:nullify) }
 
-  it { should have_many(:badges).dependent(:destroy) }
-  it { should have_many(:votes).dependent(:destroy) }
+  describe 'author_of?' do
+    let(:users) { create_list(:user, 2) }
+    let(:question) { create(:question, author: users.first) }
 
-  let(:author) { create :user }
-  let(:user) { create :user }
-  let(:question) { create :question, author: author }
-  let(:answer) { create :answer, question: question, author: author }
-
-  describe 'User is an author' do
-    it 'of the question' do
-      expect(author).to be_author(question)
+    it 'returns true if user is author of a resource' do
+      expect(users.first).to be_author_of(question)
     end
 
-    it 'of the answer' do
-      expect(author).to be_author(answer)
-    end
-  end
-
-  describe 'User is not an author' do
-    it 'of the question' do
-      expect(user).to_not be_author(question)
-    end
-
-    it 'of the answer' do
-      expect(user).to_not be_author(answer)
-    end
-  end
-
-  describe 'User voted positive' do
-    before { question.positive(user) }
-
-    it 'for the question' do
-      expect(user).to be_voted(question)
-    end
-  end
-
-  describe 'User voted negative' do
-    before { question.negative(user) }
-
-    it 'for the question' do
-      expect(user).to be_voted(question)
+    it 'returns false if user is not author of a resource' do
+      expect(users.last).to_not be_author_of(question)
     end
   end
 end

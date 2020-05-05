@@ -1,18 +1,18 @@
 FactoryBot.define do
+  sequence :question_title do |n|
+    "Question#{n}"
+  end
+
   factory :question do
-    title { "MyString" }
-    body { "MyText" }
+    title { generate(:question_title) }
+    body { 'MyText' }
 
     trait :invalid do
       title { nil }
     end
 
     trait :with_file do
-      after :create do |question|
-        file_path = Rails.root.join('spec/support/files', 'test.txt')
-        file = fixture_file_upload(file_path, 'file/txt')
-        question.files.attach(file)
-      end
+      files { Rack::Test::UploadedFile.new('spec/support/files/test.txt', 'text/plain') }
     end
   end
 end

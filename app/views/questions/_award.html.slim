@@ -1,0 +1,8 @@
+- if resource.award.present?
+  = octicon :gift, height: 22, class: 'text-warning mb-1 mt-2'
+  br
+    div class="award-image float-left"
+      = image_tag url_for(resource.award.image), height: '22', width: '22'
+    div class="award-title float-left ml-2"
+      = resource.award.title
+    div class='clearfix'

@@ -1,20 +1,10 @@
 class AttachmentsController < ApplicationController
-
-  before_action :authenticate_user!, only: %i[destroy]
-  before_action :find_attachment, only: %i[destroy]
+  before_action :authenticate_user!
+  expose :attachment, -> { ActiveStorage::Attachment.find(params[:id]) }
 
   def destroy
-    if current_user.author?(@attachment.record)
-      @attachment.purge
-    else
-      return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
-    end
-  end
+    return head :forbidden unless current_user.author_of?(attachment.record)
 
-  private
-  
-  def find_attachment
-    @attachment = ActiveStorage::Attachment.find(params[:id])
+    attachment.purge
   end
-
 end

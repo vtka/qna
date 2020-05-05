@@ -1,20 +1,21 @@
-require 'features_helper'
+require 'rails_helper'
 
-feature 'User can delete own questions', %q{
-    In order to remove an outdated information
+feature 'User can delete questions', %q{
+  In order to remove unneeded information
+  As an authenticated user and questions's author
+  I'd like to be able to delete my own questions
 } do
 
   given(:users) { create_list(:user, 2) }
   given!(:question) { create(:question, author_id: users.first.id) }
 
   describe 'Authenticated user' do
-
-    scenario 'deletes own question' do
+    scenario 'tries to delete their own question' do
       sign_in(users.first)
       visit questions_path
-      click_on 'View'
+      click_on question.title
 
-      within '.deleteQuestion' do
+      within '.question-links' do
         click_on 'Delete'
       end
 
@@ -23,21 +24,19 @@ feature 'User can delete own questions', %q{
       expect(page).to_not have_content question.body
     end
 
-    scenario "tries to delete another user's question" do
+    scenario "tries to delete other user's question" do
       sign_in(users.last)
       visit questions_path
-      click_on 'View'
+      click_on question.title
 
-      expect(page).to_not have_selector '.deleteQuestion'
+      expect(page).to_not have_link 'Delete'
     end
-
   end
 
-  scenario 'Unauthenticated user tries to ask question' do
+  scenario 'Unauthenticated user tries to delete any question' do
     visit questions_path
-    click_on 'View'
+    click_on question.title
 
-    expect(page).to_not have_selector '.deleteQuestion'
+    expect(page).to_not have_link 'Delete'
   end
-
 end

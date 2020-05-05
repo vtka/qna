@@ -1,25 +1,20 @@
 class QuestionsController < ApplicationController
-  include Voted
-  
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  include Voting
 
-  def index
-    @questions = Question.all
-  end
+  before_action :authenticate_user!, except: %i[index show]
+
+  expose :question, find: ->(id, scope) { scope.with_attached_files.find(id) }
+  expose :questions, -> { Question.all }
+  expose :answer, -> { Answer.new }
 
   def show
-    @answer = Answer.new
-    @answer.links.new
+    answer.links.new
   end
 
   def new
-    @question = Question.new
-    @question.links.new
-    @question.build_badge
+    question.links.new
+    question.build_award
   end
-
-  def edit; end
 
   def create
     @question = current_user.questions.new(question_params)
@@ -32,30 +27,23 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author?(@question)
-      @question.update(question_params)
-    end
+    return head :forbidden unless current_user.author_of?(question)
+
+    question.update(question_params)
   end
 
   def destroy
-    unless current_user.author?(@question)
-      return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
-    end
+    return head :forbidden unless current_user.author_of?(question)
 
-    @question.destroy
+    question.destroy
     redirect_to questions_path, notice: 'Your question was successfully deleted.'
   end
 
   private
 
-  def load_question
-    @question = Question.with_attached_files.find(params[:id])
-  end
-
   def question_params
-    params.require(:question).permit(:title, :body, 
-                                     files: [],
-                                     links_attributes: [:name, :url, :_destroy],
-                                     badge_attributes: [:name, :image])
+    params.require(:question).permit(:title, :body, files: [],
+                                     links_attributes: %i[id name url _destroy],
+                                     award_attributes: %i[id title image _destroy])
   end
 end

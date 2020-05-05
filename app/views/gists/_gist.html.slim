@@ -1,0 +1,29 @@
+- if resource.success?
+  div class='card bg-light border-primary mt-2 mb-2'
+    div class='card-body'
+      h6 class='card-title'
+        = link_to link.name, link.url, class: 'float-left ml-2 mt-1'
+        - if current_user&.author_of?(link.linkable)
+          | &nbsp&nbsp
+          = link_to link_path(link), title: 'Delete', method: :delete, remote: true, data: { confirm: 'Are you sure?' }, class: 'float-right mr-2 mt-1' do
+            = octicon :x, class: 'text-danger'
+        div class='clearfix'
+      div class='card-text'
+        - resource.content.each do |file|
+          div class="card mt-2 mb-2 file-#{file[:name]}"
+            div class="card-header"
+              =file[:name]
+            div class="card-body text-secondary"
+              =simple_format(file[:content])
+- else
+  div class='card bg-light border-primary mt-2 mb-2'
+    div class='card-body'
+      h6 class='card-title'
+        = link_to link.name, link.url, class: 'float-left ml-2 mt-1'
+        - if current_user&.author_of?(link.linkable)
+          | &nbsp&nbsp
+          = link_to link_path(link), title: 'Delete', method: :delete, remote: true, data: { confirm: 'Are you sure?' }, class: 'float-right mr-2 mt-1' do
+            = octicon :x, class: 'text-danger'
+        div class='clearfix'
+      div class='card-text'
+        | Cannot load Gist.
