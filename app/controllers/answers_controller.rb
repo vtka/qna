@@ -5,7 +5,6 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i[destroy update best]
   after_action :publish_answer, only: %i[create]
-  # after_action :gon_author, only: %i[create]
 
   def show; end
 
@@ -74,7 +73,7 @@ class AnswersController < ApplicationController
       'answer_channel',
       { 
         author_id: @answer.author.id,
-        body: renderer.render(partial: 'answers/answer', locals: { answer: @answer }) 
+        body: renderer.render(partial: 'answers/guest_answer', locals: { answer: @answer }) 
       }
     )
   end

@@ -1,0 +1,41 @@
+.card class='bg-light' id="answer-#{answer.id}" class=("best border-success" if answer.best?)
+  .card-body
+    p.card-text
+      - if answer.persisted?
+        p= answer.body
+    .files
+      - if answer.files.attached?
+        p= 'Files:'
+        - answer.files.each do |file|
+          p class="attachment-#{file.id} card-file"
+            = link_to file.filename.to_s, url_for(file)
+
+    .links
+      - if answer.links.exists?
+        p= 'Links:'
+        - answer.links.each do |link|
+          p class="link-#{link.id}"
+            = link_to link.name, link.url
+            - if link.gist?
+              code data-gist-id="#{link.gist_hash}"
+    .vote
+      div class = "rate #{answer.class}-#{answer.id}"
+        .rating
+          p
+            = "Score: #{answer.rating}"
+
+        .voting class = "#{'hidden' if current_user&.voted?(answer)}"
+          = link_to 'Positive', polymorphic_path(answer, action: :positive),
+                                method: :post, remote: true, data: { type: :json }
+          '  |
+          = link_to 'Negative', polymorphic_path(answer, action: :negative),
+                                method: :post, remote: true, data: { type: :json }
+
+        .revote
+          = link_to 'Revote', polymorphic_path(answer, action: :revote),
+              class: "revote-link #{'hidden' unless current_user&.voted?(answer)}",
+              method: :delete, remote: true, data: { type: :json }
+    
+div class='divider mt-4 mb-4'
+  <hr/>
+      

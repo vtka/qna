@@ -1,5 +1,5 @@
 $(document).on('turbolinks:load', function(){
-  $('.rate .voting').on('ajax:success', function(event){
+  $('body').on('ajax:success', '.rate .voting', function(event){
     var response = event.detail[0];
     var voteId = '.' + response.klass + '-' + response.id
 
@@ -9,7 +9,7 @@ $(document).on('turbolinks:load', function(){
     $('.flash').html(response.flash)
    })
 
-  $('.revote').on('ajax:success', function(event){
+  $('body').on('ajax:success', '.revote', function(event){
     var response = event.detail[0];
     var voteId = '.' + response.klass + '-' + response.id
 
