@@ -53,4 +53,32 @@ feature 'User can create answer', %q{
     expect(page).to_not have_content 'Answer'
   end
 
+  describe 'Multiple sessions', js: true do
+    scenario 'answer appears on another user\'s page' do
+      Capybara.using_session('user') do
+        sign_in user
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.new-answer' do
+          fill_in 'Your answer', with: 'AnswerBody'
+          click_on 'Answer'
+        end
+
+        expect(page).to have_content 'AnswerBody'
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+
+        expect(page).to have_content 'AnswerBody'
+      end
+    end
+  end
+
 end

@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i[destroy update best]
   after_action :publish_answer, only: %i[create]
+  # after_action :gon_author, only: %i[create]
 
   def show; end
 
@@ -45,6 +46,11 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def gon_author
+    gon.author = @answer.author.id
+  end
+
   def find_question
     @question = Question.find(params[:question_id])
   end
@@ -66,10 +72,10 @@ class AnswersController < ApplicationController
 
     ActionCable.server.broadcast(
       'answer_channel',
-      renderer.render(
-        partial: 'answers/answer', 
-        locals: { answer: @answer }
-        )
-      )
+      { 
+        author_id: @answer.author.id,
+        body: renderer.render(partial: 'answers/answer', locals: { answer: @answer }) 
+      }
+    )
   end
 end

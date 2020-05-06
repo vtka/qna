@@ -6,6 +6,11 @@ consumer.subscriptions.create("AnswerChannel", {
   },
 
   received(data) {
-    $('.answers').append(data);
+    // console.log(gon.user_id)
+    console.log(data)
+
+    if (gon.user_id !== data.author_id) {
+      $('.answers').append(data.body);
+    }
   }
 });
