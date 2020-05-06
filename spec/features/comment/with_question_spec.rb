@@ -37,26 +37,26 @@ feature 'User can post a comment', %q{
     end
   end
 
-  # describe 'Multiple sessions', js: true do
-  #   scenario 'comment appears on another user\'s page' do
-  #     Capybara.using_session('user') do
-  #       sign_in user
-  #       visit question_path(question)
+  describe 'Multiple sessions', js: true do
+    scenario 'comment appears on another user\'s page' do
+      Capybara.using_session('user') do
+        sign_in user
+        visit question_path(question)
 
-  #       within '.question-comments' do
-  #         click_on 'Add comment'
-  #         fill_in 'Your comment', with: 'Some Comment'
-  #         click_on 'Post'
-  #       end
+        within '.question-comments' do
+          click_on 'Add comment'
+          fill_in 'Your comment', with: 'Some Comment'
+          click_on 'Post'
+        end
 
-  #       expect(page).to have_content 'Some Comment'
-  #     end
+        expect(page).to have_content 'Some Comment'
+      end
 
-  #     Capybara.using_session('guest') do
-  #       visit question_path(question)
+      Capybara.using_session('guest') do
+        visit question_path(question)
 
-  #       expect(page).to have_content 'Some Comment'
-  #     end
-  #   end
-  # end
+        expect(page).to have_content 'Some Comment'
+      end
+    end
+  end
 end

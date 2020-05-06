@@ -25,20 +25,20 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
         .deleteQuestion
           p= link_to 'Delete', question_path(@question), method: :delete, class: 'text-danger'
     
-    .question-comments
-      - if user_signed_in?
-        = link_to 'Add comment', '#',
-                  class: 'new-comment-link',
-                  data: { klass: @question.class.to_s.downcase,
-                          id: @question.id }
+    / .question-comments
+    /   - if user_signed_in?
+    /     = link_to 'Add comment', '#',
+    /               class: 'new-comment-link',
+    /               data: { klass: @question.class.to_s.downcase,
+    /                       id: @question.id }
 
-        = render partial: 'comments/form', locals: { resource: @question }
+    /     = render partial: 'comments/form', locals: { resource: @question }
 
-      - if @question.comments.any?
-        h3 Comments:
-        = render @question.comments
-      - else
-        p No comments yet
+    /   - if @question.comments.any?
+    /     h3 Comments:
+    /     = render @question.comments
+    /   - else
+    /     p No comments yet
 
     .vote
       = render partial: 'votes/vote', locals: { resource: @question }
@@ -50,4 +50,19 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
           = @question.badge.name
         p.card-text
           = image_tag @question.badge.image, size: '50x50'
+
+.question-comments
+  - if user_signed_in?
+    = link_to 'Add comment', '#',
+              class: 'new-comment-link btn btn-primary mt-2',
+              data: { klass: @question.class.to_s.downcase,
+                      id: @question.id }
+
+    = render partial: 'comments/form', locals: { resource: @question }
+
+  - if @question.comments.any?
+    h6.mt-4 Comments:
+    = render @question.comments
+  - else
+    p No comments yet
         

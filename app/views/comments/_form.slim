@@ -4,10 +4,10 @@
   .comment-errors
     = render 'shared/errors', resource: @comment
 
-  p
+  p.mt-4
     = f.label :body, 'Your comment'
   p
-    = f.text_area :body
+    = f.text_area :body, class: 'form-control mt-2 mb-2'
 
   p
-    = f.submit 'Post'
+    = f.submit 'Post', class: 'btn btn-success'

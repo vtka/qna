@@ -1,7 +1,7 @@
-div class="comment-#{comment.id}"
-  p.comment-content
+div class="comment-#{comment.id} card bg-light mt-2 mb-2"
+  p.comment-content.p-2
     = comment.body
-  p.comment-author
+  p.comment-author.p-2
     a Author:
     '  
     = comment.author.email
