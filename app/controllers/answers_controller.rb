@@ -62,9 +62,11 @@ class AnswersController < ApplicationController
   def publish_answer
     return if @answer.errors.any?
     
+    renderer = ApplicationController.renderer_with_user(current_user)
+
     ActionCable.server.broadcast(
       'answer_channel',
-      ApplicationController.render(
+      renderer.render(
         partial: 'answers/answer', 
         locals: { answer: @answer }
         )

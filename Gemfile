@@ -34,8 +34,8 @@ gem 'validate_url'
 gem 'octokit', '~> 4.0'
 
 # For Action Cable rendering
-gem 'gon'
-gem 'skim'
+# gem 'gon'
+# gem 'skim'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
