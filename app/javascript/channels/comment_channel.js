@@ -6,10 +6,12 @@ consumer.subscriptions.create("CommentChannel", {
   },
 
   received(data) {
-    console.log(data)
-
     if (gon.user_id !== data.author_id) {
-      $('.question-comments').append(data.body);
+      $('#' + data.resource_type +
+        '-' + data.resource_id + 
+        '.' + data.resource_type + 
+        '-comments').append(data.body);
+      // $('#' + data.resource_type + '-' + data.resource_id).append(data.body);
     }
   }
 });

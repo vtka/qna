@@ -32,6 +32,8 @@ class CommentsController < ApplicationController
       'comment_channel',
       { 
         author_id: @comment.author.id,
+        resource_type: @resource.class.name.downcase,
+        resource_id: @resource.id,
         body: renderer.render(partial: 'comments/comment', locals: { comment: @comment }) 
       }
     )

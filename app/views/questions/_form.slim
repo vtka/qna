@@ -24,21 +24,6 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
           = f.submit 'Save', class: 'btn btn-primary'
         .deleteQuestion
           p= link_to 'Delete', question_path(@question), method: :delete, class: 'text-danger'
-    
-    / .question-comments
-    /   - if user_signed_in?
-    /     = link_to 'Add comment', '#',
-    /               class: 'new-comment-link',
-    /               data: { klass: @question.class.to_s.downcase,
-    /                       id: @question.id }
-
-    /     = render partial: 'comments/form', locals: { resource: @question }
-
-    /   - if @question.comments.any?
-    /     h3 Comments:
-    /     = render @question.comments
-    /   - else
-    /     p No comments yet
 
     .vote
       = render partial: 'votes/vote', locals: { resource: @question }
@@ -51,7 +36,7 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
         p.card-text
           = image_tag @question.badge.image, size: '50x50'
 
-.question-comments
+.question-comments id="question-#{@question.id}"
   - if user_signed_in?
     = link_to 'Add comment', '#',
               class: 'new-comment-link btn btn-primary mt-2',
