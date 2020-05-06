@@ -14,5 +14,6 @@ require("../answers")
 require("../questions")
 require("../embed")
 require("../votes")
+require("../comments")
 
 console.log('Hello World from Webpacker')

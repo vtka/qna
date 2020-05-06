@@ -9,6 +9,10 @@
     div class='divider mt-4 mb-4'
       <hr/>
       
+    .comments
+      = render @question.comments
+    = render partial: 'comments/form', locals: { resource: @question }
+      
     .answer-errors
       = render 'shared/errors', resource: @answer
 
