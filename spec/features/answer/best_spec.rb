@@ -30,7 +30,7 @@ feature 'User can choose the best answer', %q{
       end
       
       scenario 'chooses best answer within authored question' do
-        within "#answer-#{answers.last.id} .answer-content" do
+        within "#answer-#{answers.last.id}" do
           click_on 'Best answer'
 
           expect(page).to_not have_link 'Best answer'

@@ -35,4 +35,7 @@
           = link_to 'Revote', polymorphic_path(answer, action: :revote),
               class: "revote-link #{'hidden' unless current_user&.voted?(answer)}",
               method: :delete, remote: true, data: { type: :json }
+              
+  .answer-comments.p-4 id="answer-comment-#{answer.id}"
+    = render partial: 'comments/list', locals: { resource: answer }
       

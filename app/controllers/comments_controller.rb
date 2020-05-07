@@ -5,7 +5,6 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @resource.comments.new(comment_params)
-    puts @comment
     @comment.author = current_user
 
     if @comment.save
