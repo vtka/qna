@@ -1,14 +1,15 @@
 require 'features_helper'
 
 feature 'User can post a comment', %q{
-  To any question
+  To any answer
   I'd like to be able to post comments
-  For the question
+  For the answer
 } do
 
   given(:author) { create :user }
   given(:user) { create :user }
   given!(:question) { create :question, author: author }
+  given!(:answer) { create :answer, question: question, author: author }
 
   describe 'Authenticated user', js: true do
     background do
@@ -17,7 +18,7 @@ feature 'User can post a comment', %q{
     end
 
     scenario 'posts a comment' do
-      within '.question-comments' do
+      within '.answer-comments' do
         click_on 'Add comment'
         fill_in 'Your comment', with: 'Some Comment'
         click_on 'Post'
@@ -27,7 +28,7 @@ feature 'User can post a comment', %q{
     end
 
     scenario 'posts a comment with errors' do
-      within '.question-comments' do
+      within '.answer-comments' do
         click_on 'Add comment'
         fill_in 'Your comment', with: ''
         click_on 'Post'
@@ -43,7 +44,7 @@ feature 'User can post a comment', %q{
         sign_in user
         visit question_path(question)
 
-        within '.question-comments' do
+        within '.answer-comments' do
           click_on 'Add comment'
           fill_in 'Your comment', with: 'Some Comment'
           click_on 'Post'
