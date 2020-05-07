@@ -36,7 +36,7 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
         p.card-text
           = image_tag @question.badge.image, size: '50x50'
 
-.question-comments id="question-#{@question.id}"
+.question-comments id="question-comment-#{@question.id}"
   - if user_signed_in?
     = link_to 'Add comment', '#',
               class: 'new-comment-link btn btn-primary mt-2',

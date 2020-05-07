@@ -28,7 +28,10 @@
     
     .vote
       = render partial: 'votes/vote', locals: { resource: answer }
-      
+
+  .answer-comments.p-4 id="answer-comment-#{answer.id}"
+    = render partial: 'comments/list', locals: { resource: answer }
+
 div class='divider mt-4 mb-4'
   <hr/>
       

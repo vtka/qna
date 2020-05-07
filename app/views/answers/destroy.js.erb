@@ -1,3 +1,4 @@
 <% unless @answer.persisted? %>
   $('<%= "#answer-#{@answer.id}" %>').remove();
+  $('<%= "#answer-#{@answer.id}" %>.answer-comments').remove();
 <% end %>

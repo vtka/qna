@@ -9,7 +9,7 @@ consumer.subscriptions.create("AnswerChannel", {
     console.log(data)
 
     if (gon.user_id !== data.author_id) {
-      $('.answers').append(data.body);
+      $('#question-answers-' + data.question_id + '.answers').append(data.body);
     }
   }
 });

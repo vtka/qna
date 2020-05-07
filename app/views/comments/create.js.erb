@@ -1,8 +1,8 @@
 $('.comment-errors').html('<%= j render 'shared/errors', resource: @comment %>');
 
 <% if @comment.persisted? %>
-  $('.question-comments').append('<%= j render @comment %>');
-  $('.comment-form #comment_content').val('');
+  $('#<%= "#{@comment.commentable_type.downcase}" %>-comment-<%= "#{@comment.commentable_id}" %>.<%= "#{@comment.commentable_type.downcase}" %>-comments').append('<%= j render @comment %>');
+  $('.comment-form #comment_body').val('');
   $('.comment-form').hide();
   $('.new-comment-link').show();
 <% end %>

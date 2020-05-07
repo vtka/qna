@@ -1,0 +1,11 @@
+- if user_signed_in?
+  = link_to 'Add comment', '#',
+            class: 'new-comment-link btn btn-primary mt-2',
+            data: { klass: resource.class.to_s.downcase,
+                    id: resource.id }
+
+  = render partial: 'comments/form', locals: { resource: resource }
+
+- if resource.comments.any?
+  h6.mt-4 Comments:
+  = render resource.comments

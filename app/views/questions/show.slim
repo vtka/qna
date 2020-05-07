@@ -12,8 +12,8 @@
     .answer-errors
       = render 'shared/errors', resource: @answer
 
-    .answers
-      = render @question.answers.order('best DESC')
+    .answers id="question-answers-#{@question.id}"
+      = render @question.answers.order('best DESC, created_at')
 
     div class='divider mt-4 mb-4'
       <hr/>

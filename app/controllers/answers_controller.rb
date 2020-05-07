@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[destroy create update best]
   before_action :find_question, only: %i[new create]
   before_action :find_answer, only: %i[destroy update best]
+  before_action :new_comment, only: %i[show update create best]
   after_action :publish_answer, only: %i[create]
 
   def show; end
@@ -46,6 +47,10 @@ class AnswersController < ApplicationController
 
   private
 
+  def new_comment
+    @comment = Comment.new
+  end
+
   def gon_author
     gon.author = @answer.author.id
   end
@@ -72,6 +77,7 @@ class AnswersController < ApplicationController
     ActionCable.server.broadcast(
       'answer_channel',
       { 
+        question_id: @question.id,
         author_id: @answer.author.id,
         body: renderer.render(partial: 'answers/guest_answer', locals: { answer: @answer }) 
       }
