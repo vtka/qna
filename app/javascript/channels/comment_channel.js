@@ -7,6 +7,9 @@ $(document).on('turbolinks:load', function () {
       var answerId = $('.answer').data('answer-id');
       var questionId = $('.question').data('question-id');
 
+      console.log(answerId)
+      console.log(questionId)
+
       this.perform('follow', {
         answer_id: answerId,
         question_id: questionId
@@ -17,7 +20,7 @@ $(document).on('turbolinks:load', function () {
       console.log(data)
 
       if (gon.user_id !== data.author_id) {
-        $(`#${data.resource_type}-comment-${data.resource_id}`).append(data.body);
+        $(document).find(`#${data.resource_type}-comment-${data.resource_id}`).append(data.body);
       }
     }
   })

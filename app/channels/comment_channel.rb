@@ -3,4 +3,8 @@ class CommentChannel < ApplicationCable::Channel
     stream_from "question-#{data['question_id']}-comments"
     stream_from "answer-#{data['answer_id']}-comments"
   end
+
+  def unsubscribed
+    # Any cleanup needed when channel is unsubscribed
+  end
 end
