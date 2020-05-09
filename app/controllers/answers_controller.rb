@@ -75,7 +75,7 @@ class AnswersController < ApplicationController
     renderer = ApplicationController.renderer_with_user(current_user)
 
     ActionCable.server.broadcast(
-      'answer_channel',
+      "question-#{@question.id}-answers",
       { 
         question_id: @question.id,
         author_id: @answer.author.id,
