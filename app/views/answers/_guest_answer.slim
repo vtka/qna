@@ -1,4 +1,4 @@
-.card class='bg-light' id="answer-#{answer.id}" class=("best border-success" if answer.best?)
+.card class='answer bg-light' id="answer-#{answer.id}" data-answer-id="#{answer.id}" class=("best border-success" if answer.best?)
   .card-body
     p.card-text
       - if answer.persisted?

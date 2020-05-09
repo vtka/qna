@@ -36,18 +36,6 @@ p= link_to 'Back', questions_path, class: 'btn btn-primary back-link'
         p.card-text
           = image_tag @question.badge.image, size: '50x50'
 
-.question-comments id="question-comment-#{@question.id}"
-  - if user_signed_in?
-    = link_to 'Add comment', '#',
-              class: 'new-comment-link btn btn-primary mt-2',
-              data: { klass: @question.class.to_s.downcase,
-                      id: @question.id }
-
-    = render partial: 'comments/form', locals: { resource: @question }
-
-  - if @question.comments.any?
-    h6.mt-4 Comments:
-    = render @question.comments
-  - else
-    p No comments yet
+  .question-comments.p-4 id="question-comment-#{@question.id}"
+    = render partial: 'comments/list', locals: { resource: @question }
         

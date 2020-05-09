@@ -29,7 +29,7 @@ class CommentsController < ApplicationController
     renderer = ApplicationController.renderer_with_user(current_user)
 
     ActionCable.server.broadcast(
-      'comment_channel',
+      "#{@resource.class.name.downcase}-#{@resource.id}-comments",
       { 
         author_id: @comment.author.id,
         resource_type: @resource.class.name.downcase,
