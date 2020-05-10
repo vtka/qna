@@ -1,5 +1,10 @@
 class AnswerChannel < ApplicationCable::Channel
-  def follow(data)
-    stream_from "question-#{data['question_id']}-answers"
+  def subscribed
+    question = GlobalID::Locator.locate(params[:id])
+    stream_for question
+  end
+
+  def unsubscribed
+    # Any cleanup needed when channel is unsubscribed
   end
 end

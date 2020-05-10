@@ -3,3 +3,9 @@
 
 const channels = require.context('.', true, /_channel\.js$/)
 channels.keys().forEach(channels)
+
+import consumer from "./consumer"
+
+$(document).on("turbolinks:before-render", function() {
+  consumer.subscriptions.subscriptions = [];
+})

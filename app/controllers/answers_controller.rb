@@ -74,10 +74,11 @@ class AnswersController < ApplicationController
     
     renderer = ApplicationController.renderer_with_user(current_user)
 
-    ActionCable.server.broadcast(
-      "question-#{@question.id}-answers",
+    @question = @answer.question
+
+    AnswerChannel.broadcast_to(
+      @question,
       { 
-        question_id: @question.id,
         author_id: @answer.author.id,
         body: renderer.render(partial: 'answers/guest_answer', locals: { answer: @answer }) 
       }

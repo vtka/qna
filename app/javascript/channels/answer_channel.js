@@ -1,20 +1,27 @@
 import consumer from "./consumer"
 
-$(document).on('turbolinks:load', function () {
-  consumer.subscriptions.create(
-    "AnswerChannel", {
-    connected() {
-      var questionId = $('.question').data('question-id');
-      this.perform('follow', { question_id: questionId });
-    },
+$(document).on("turbolinks:load", function(e) {
+  const question_id = $("#question-channel-provider").data("id");
+  
+  if (question_id) {
+    consumer.subscriptions.create({ channel: "AnswerChannel", id: question_id }, {
 
-    received(data) {
-      console.log(data)
+      connected() {
+        // Called when the subscription is ready for use on the server
+      },
 
-      if (gon.user_id !== data.author_id) {
-        $(`#question-answers-${data.question_id}.answers`).append(data.body);
-        window.GistEmbed.init()
+      disconnected() {
+        // Called when the subscription has been terminated by the server
+      },
+
+      received(data) {
+        console.log(data)
+  
+        if (gon.user_id !== data.author_id) {
+          $("body").find(".answers").append(data.body);
+          window.GistEmbed.init()
+        }
       }
-    }
-  })
-});
+    });
+  }
+})
