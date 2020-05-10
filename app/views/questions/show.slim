@@ -3,7 +3,7 @@
     .question-errors
       = render 'shared/errors', resource: @question
 
-    div#question-channel-provider data-id=@question.to_gid_param class='question mt-3 mb-3'
+    div#question-channel-provider data-id=@question.to_gid_param class='question mt-3 mb-3' data-question-id="#{@question.id}"
       = render 'form', class: 'hidden'
 
     div class='divider mt-4 mb-4'
