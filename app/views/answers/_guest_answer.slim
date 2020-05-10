@@ -1,4 +1,4 @@
-.card class='answer bg-light' id="answer-#{answer.id}" data-answer-id="#{answer.id}" class=("best border-success" if answer.best?)
+.card.answer-channel-provider data-channel-id=answer.to_gid_param class='answer bg-light' id="answer-#{answer.id}" data-answer-id="#{answer.id}" class=("best border-success" if answer.best?)
   .card-body
     p.card-text
       - if answer.persisted?
@@ -38,4 +38,7 @@
               
   .answer-comments.p-4 id="answer-comment-#{answer.id}"
     = render partial: 'comments/list', locals: { resource: answer }
-      
+
+javascript:
+
+  subscribeToAnswerChannel("#{answer.to_gid_param}")
