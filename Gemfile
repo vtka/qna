@@ -36,6 +36,10 @@ gem 'octokit', '~> 4.0'
 # For Action Cable rendering
 gem 'gon'
 
+# OmniAuth
+gem 'omniauth'
+gem 'omniauth-github'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password

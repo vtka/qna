@@ -9,7 +9,8 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: 'author_id', dependent: :delete_all
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:github]
 
   def author?(object)
     self.id == object.author_id
@@ -17,6 +18,10 @@ class User < ApplicationRecord
 
   def voted?(resource)
     votes.exists?(votable: resource)
+  end
+
+  def self.find_for_oauth(auth)
+    
   end
 
 end
