@@ -6,13 +6,13 @@ module FeatureHelpers
     click_on 'Log in'
   end
 
-  def oauth_response(options = {})
-    return unless options[:provider].present?
+  # def oauth_response(options = {})
+  #   return unless options[:provider].present?
 
-    OmniAuth.config.mock_auth[options[:provider].to_sym] = OmniAuth::AuthHash.new(
-      'provider' => options[:provider].to_s,
-      'uid' => '123',
-      'info' => { 'email' => 'user@example.com' }
-    )
-  end
+  #   OmniAuth.config.mock_auth[options[:provider].to_sym] = OmniAuth::AuthHash.new(
+  #     'provider' => options[:provider].to_s,
+  #     'uid' => '123',
+  #     'info' => { 'email' => 'user@example.com' }
+  #   )
+  # end
 end

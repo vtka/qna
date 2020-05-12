@@ -6,46 +6,47 @@ RSpec.describe OauthCallbacksController, type: :controller do
     @request.env["devise.mapping"] = Devise.mappings[:user]
   end
 
-  describe 'Github' do
-    let(:oauth_data) { { 'provider' => 'github', 'uid' => 123 } }
-
-    it 'finds user from oauth data' do
-      allow(request.env).to receive(:[]).and_call_original
-      allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
-      expect(User).to receive(:find_for_oauth).with(oauth_data)
-      get :github
-    end
-
-    context 'user exists' do
-      let!(:user) { create(:user) }
+  Devise.omniauth_providers.each do |provider|
+    describe provider.to_s.capitalize do
+      let(:oauth_data) { oauth_response(provider: provider) }
 
       before do
-        allow(User).to receive(:find_for_oauth).and_return(user)
-        get :github
+        allow(request.env).to receive(:[]).and_call_original
+        allow(request.env).to receive(:[]).with("omniauth.auth").and_return(oauth_data)
       end
 
-      it 'login user' do
-        expect(subject.current_user).to eq user
+      it 'finds user from oauth data' do
+        expect(User).to receive(:find_for_oauth).with(oauth_data)
+        get provider
       end
 
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path
+      context 'user exists' do
+        let!(:user) { create(:user) }
+
+        before do
+          allow(User).to receive(:find_for_oauth).and_return(user)
+          get provider
+        end
+
+        it 'logs in user' do
+          expect(subject.current_user).to eq user
+        end
+
+        it 'redirects to root path' do
+          expect(response).to redirect_to root_path
+        end
       end
-    end
 
-    context 'user does not exist' do
+      context 'user does not exist' do
+        it 'creates user' do
+          expect { get provider }.to change(User, :count).by(1)
+          expect(User.last.email).to eq (oauth_data.info[:email])
+        end
 
-      before do
-        allow(User).to receive(:find_for_oauth)
-        get :github
-      end
-
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path
-      end
-
-      it 'does not login user' do
-        expect(subject.current_user).to_not be
+        it 'redirects to root path' do
+          get provider
+          expect(response).to redirect_to root_path
+        end
       end
     end
   end

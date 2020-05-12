@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'oauth_callbacks',
+    confirmations: 'confirmations'
+  }
 
   resources :attachments, only: %i[destroy]
 

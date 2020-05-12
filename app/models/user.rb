@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :authorizations, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
+         :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:github, :facebook]
 
   def author?(object)
