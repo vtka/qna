@@ -7,11 +7,7 @@ class AttachmentsController < ApplicationController
 
 
   def destroy
-    if current_user.author?(@attachment.record)
-      @attachment.purge
-    else
-      return render(file: Rails.root.join('public', '302'), formats: [:html], status: 302, layout: false)
-    end
+    @attachment.purge
   end
 
   private

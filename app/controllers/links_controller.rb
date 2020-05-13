@@ -6,11 +6,7 @@ class LinksController < ApplicationController
   authorize_resource
 
   def destroy
-    if current_user.author?(@link.linkable)
-      @link.destroy
-    else
-      return render(file: Rails.root.join('public', '302'), formats: [:html], status: 302, layout: false)
-    end
+    @link.destroy
   end
 
   private

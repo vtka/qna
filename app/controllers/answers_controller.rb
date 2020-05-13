@@ -18,10 +18,8 @@ class AnswersController < ApplicationController
   def edit; end
 
   def update
-    if current_user.author?(@answer)
-      @answer.update(answer_params)
-      @question = @answer.question
-    end
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def create
@@ -34,17 +32,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-    else
-      return render(file: Rails.root.join('public', '302'), formats: [:html], status: 302, layout: false)
-    end
+    @answer.destroy
   end
 
   def best
-    if current_user.author?(@answer.question)
-      @answer.best!
-    end
+    @answer.best!
   end
 
   private

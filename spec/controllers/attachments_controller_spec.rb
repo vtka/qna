@@ -28,9 +28,9 @@ RSpec.describe AttachmentsController, type: :controller do
           expect { delete :destroy, params: { id: question.files.first }, format: :js }.not_to change(question.files, :count)
         end
 
-        it 'returns 302 head' do
+        it 'returns 403 head' do
           delete :destroy, params: { id: question.files.first }, format: :js
-          expect(response.status).to eq(302)
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -58,9 +58,9 @@ RSpec.describe AttachmentsController, type: :controller do
           expect { delete :destroy, params: { id: answer.files.first }, format: :js }.not_to change(answer.files, :count)
         end
 
-        it 'returns 302 head' do
+        it 'returns 403 head' do
           delete :destroy, params: { id: answer.files.first }, format: :js
-          expect(response.status).to eq(302)
+          expect(response.status).to eq(403)
         end
       end
     end

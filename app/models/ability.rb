@@ -28,19 +28,19 @@ class Ability
   def user_abilities
     guest_abilities
     can :create, [Question, Answer, Comment]
-    can :update, [Question, Answer], author: user
-    can :destroy, [Question, Answer], author: user
+    can :update, [Question, Answer], author_id: user.id
+    can :destroy, [Question, Answer], author_id: user.id
 
     can [:positive, :negative], [Question, Answer] do |resource|
-      !user.author? resource
+      !user.author?(resource)
     end
 
     can :revote, [Question, Answer] do |resource|
-      resource.votes.exists?(user_id: user.id)
+      resource.votes.exists?(author_id: user.id)
     end
 
-    can :best, Answer, question: { author: user }
-    can :manage, Link, linkable: { author: user }
+    can :best, Answer, question: { author_id: user.id }
+    can :manage, Link, linkable: { author_id: user.id }
     can :manage, ActiveStorage::Attachment do |attachment|
       user.author? attachment.record
     end

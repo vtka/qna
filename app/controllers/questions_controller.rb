@@ -36,16 +36,10 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author?(@question)
-      @question.update(question_params)
-    end
+    @question.update(question_params)
   end
 
   def destroy
-    unless current_user.author?(@question)
-      return render(file: Rails.root.join('public', '302'), formats: [:html], status: 302, layout: false)
-    end
-
     @question.destroy
     redirect_to questions_path, notice: 'Your question was successfully deleted.'
   end

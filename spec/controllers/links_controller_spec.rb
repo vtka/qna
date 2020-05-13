@@ -30,9 +30,9 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: { id: question_link.id }, format: :js }.not_to change(question.links, :count)
         end
 
-        it 'returns 302 head' do
+        it 'returns 403 head' do
           delete :destroy, params: { id: question_link.id }, format: :js
-          expect(response.status).to eq(302)
+          expect(response.status).to eq(403)
         end
       end
     end
@@ -62,9 +62,9 @@ RSpec.describe LinksController, type: :controller do
           expect { delete :destroy, params: { id: answer_link.id }, format: :js }.not_to change(answer.links, :count)
         end
 
-        it 'returns 302 head' do
+        it 'returns 403 head' do
           delete :destroy, params: { id: answer_link.id }, format: :js
-          expect(response.status).to eq(302)
+          expect(response.status).to eq(403)
         end
       end
     end

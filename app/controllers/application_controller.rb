@@ -14,7 +14,11 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    if request.format == :html
+      redirect_to root_url, alert: exception.message
+    else
+      render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
+    end
   end
 
   check_authorization unless :devise_controller?
