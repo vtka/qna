@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   before_action :new_comment, only: %i[show update create best]
   after_action :publish_answer, only: %i[create]
 
+  authorize_resource
+
   def show; end
 
   def new

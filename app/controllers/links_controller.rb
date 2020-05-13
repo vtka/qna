@@ -3,6 +3,8 @@ class LinksController < ApplicationController
   before_action :authenticate_user!, only: %i[destroy]
   before_action :find_link, only: %i[destroy]
 
+  authorize_resource
+
   def destroy
     if current_user.author?(@link.linkable)
       @link.destroy

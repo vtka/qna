@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   before_action :new_comment, only: %i[show update]
   after_action :publish_question, only: %i[create]
 
+  authorize_resource 
+
   def index
     @questions = Question.all
   end
