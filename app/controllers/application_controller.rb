@@ -14,10 +14,10 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    if request.format == :html
-      redirect_to root_url, alert: exception.message
-    else
-      render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
+    respond_to do |format|
+      format.html { redirect_to root_url, alert: exception.message }
+      format.json { render json: { error: true, message: "Error 403, you don't have permissions for this operation." } }
+      format.js { render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false) }
     end
   end
 
