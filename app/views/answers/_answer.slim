@@ -9,7 +9,7 @@ div.answer-channel-provider data-channel-id=answer.to_gid_param class='answer mt
       .links
         = render 'links/link', resource: answer
 
-      - if user_signed_in? && current_user&.author?(answer)
+      - if can?(:update, answer)
         div.updateAnswer
           p= link_to 'Edit', '#', class: 'edit-answer-link text-warning', data: { answer_id: answer.id }
           = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
@@ -20,10 +20,12 @@ div.answer-channel-provider data-channel-id=answer.to_gid_param class='answer mt
               = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
 
             = f.submit 'Save', class: 'btn btn-primary'
+
+      - if can?(:destroy, answer)
         div.deleteAnswer
           p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger', remote: true, data: { confirm: 'Are your sure?' }
 
-      - if user_signed_in? && current_user&.author?(answer.question) && !answer.best?
+      - if can?(:best, answer) && !answer.best?
         div.bestAnswer  
           = link_to 'Best answer', best_answer_path(answer), class: 'btn btn-success', method: :patch, remote: true
       

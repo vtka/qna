@@ -62,5 +62,15 @@ describe Ability do
         it { should_not be_able_to :destroy, other_answer, author: other, author: user }
       end
     end
+
+    context 'to choose best answer' do
+      context 'as author of the question' do
+        it { should be_able_to :best, answer, author: user }
+      end
+
+      context 'as regular user' do
+        it { should_not be_able_to :best, other_answer, author: user }
+      end
+    end
   end
 end

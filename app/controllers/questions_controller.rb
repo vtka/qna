@@ -43,7 +43,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     unless current_user.author?(@question)
-      return render(file: Rails.root.join('public', '403'), formats: [:html], status: 403, layout: false)
+      return render(file: Rails.root.join('public', '302'), formats: [:html], status: 302, layout: false)
     end
 
     @question.destroy

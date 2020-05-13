@@ -60,9 +60,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer, question_id: question } }.to_not change(Answer, :count)
       end
 
-      it 'redirects to 403 page' do
+      it 'redirects to 302 page' do
         delete :destroy, params: { id: answer, question_id: question }
-        expect(response.status).to eq(403)
+        expect(response.status).to eq(302)
       end
     end
   end
@@ -130,10 +130,6 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
 
         expect(answer).not_to be_best
-      end
-
-      it 'renders best view' do
-        expect(response).to render_template :best
       end
     end
   end

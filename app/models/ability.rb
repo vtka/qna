@@ -31,9 +31,13 @@ class Ability
     can :update, [Question, Answer], author: user
     can :destroy, [Question, Answer], author: user
 
-    can :positive, [Question, Answer], votable: { author: user }
-    can :negative, [Question, Answer], votable: { author: user }
-    can :revote, [Question, Answer], votable: { author: user }
+    can [:positive, :negative], [Question, Answer] do |resource|
+      !user.author? resource
+    end
+
+    can :revote, [Question, Answer] do |resource|
+      resource.votes.exists?(user_id: user.id)
+    end
 
     can :best, Answer, question: { author: user }
     can :manage, Link, linkable: { author: user }
