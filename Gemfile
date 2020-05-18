@@ -44,6 +44,9 @@ gem 'omniauth-facebook'
 # Authorization
 gem 'cancancan'
 
+# REST API
+gem 'doorkeeper'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
