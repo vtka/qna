@@ -38,6 +38,7 @@ RSpec.configure do |config|
   config.include GlobalHelpers
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
+  config.include ApiHelpers, type: :request
 
   include ActionDispatch::TestProcess
 

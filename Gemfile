@@ -44,8 +44,12 @@ gem 'omniauth-facebook'
 # Authorization
 gem 'cancancan'
 
+gem 'pry-rails'
+gem 'pry-byebug'
+
 # REST API
 gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

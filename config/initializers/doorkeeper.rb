@@ -224,8 +224,7 @@ Doorkeeper.configure do
   # For more information go to
   # https://doorkeeper.gitbook.io/guides/ruby-on-rails/scopes
   #
-  default_scopes :read
-  optional_scopes :write
+  default_scopes :all
     
   enforce_configured_scopes
 
