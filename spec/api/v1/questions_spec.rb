@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:headers) { {
-    # "CONTENT_TYPE" => "application/json",
-    "ACCEPT" => "application/json"
-  } }
+  let(:headers) { { "ACCEPT" => "application/json" } }
 
   describe 'GET /api/v1/questions' do
     let(:method) { :get }
@@ -15,25 +12,23 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let(:access_token) { create :access_token }
       let(:user) { create :user }
-      let!(:questions) { create_list(:question, 2, author: user) }
+      let!(:questions) { create_list :question, 2, author: user }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
-      let!(:answers) { create_list(:answer, 3, author: user, question: question) } 
+      let!(:answers) { create_list :answer, 3, author: user, question: question }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns status 200' do
-        expect(response).to be_successful
+      it_behaves_like 'Status OK'
+
+      it_behaves_like 'Public fields returnable' do
+        let(:fields) { %w[id title body created_at updated_at] }
+        let(:resource_response) { question_response }
+        let(:resource) { question }
       end
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 2
-      end
-
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at].each do |attr|
-          expect(question_response[attr]).to eq question.send(attr).as_json
-        end
       end
 
       it 'contains user object' do
@@ -52,10 +47,10 @@ describe 'Questions API', type: :request do
           expect(question_response['answers'].size).to eq 3
         end
 
-        it 'returns all public fields' do
-          %w[id body author_id created_at updated_at].each do |attr|
-            expect(answer_response[attr]).to eq answer.send(attr).as_json
-          end
+        it_behaves_like 'Public fields returnable' do
+          let(:fields) {  %w[id body author_id created_at updated_at] }
+          let(:resource_response) { answer_response }
+          let(:resource) { answer }
         end
       end
     end
@@ -71,21 +66,70 @@ describe 'Questions API', type: :request do
       let(:access_token) { create :access_token }
       let(:question) { { title: 'Test Title', body: 'Test Body' } }
       let(:question_response) { json['question'] }
-      before { post api_path, params: { access_token: access_token.token, question: question }, headers: headers }
 
-      it 'returns status 201' do
-        expect(response.status).to eq 201
+      let(:question_request) {
+        post api_path, params: { 
+          access_token: access_token.token,
+          question: question
+        }, headers: headers 
+      }
+
+      it_behaves_like 'Status OK' do
+        let(:request) { question_request }
+      end
+
+      it_behaves_like 'Public fields returnable' do
+        let(:request) { question_request }
+        let(:fields) {  %w[id title body created_at updated_at author] }
+        let(:resource_response) { question_response }
+        let(:resource) { Question.first }
       end
 
       it 'saves question in database' do
-        expect(Question.count).to eq 1
-      end
-
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at].each do |attr|
-          expect(question_response[attr]).to eq Question.first.send(attr).as_json
-        end
+        expect { question_request }.to change(Question, :count).by(1)
       end
     end
-  end 
+  end
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let(:method) { :patch }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:user) { create :user }
+    let!(:question) { create :question, author: user }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      let(:access_token) {
+        create :access_token,
+        resource_owner_id: user.id
+      }
+
+      let(:new_params_for_question) { { title: 'New Title', body: 'New Body' } }
+      let(:question_response) { json['question'] }
+
+      let(:question_request) {
+        patch api_path, params: { 
+          access_token: access_token.token,
+          question: new_params_for_question
+        }, headers: headers 
+      }
+
+      it_behaves_like 'Status OK' do
+        let(:request) { question_request }
+      end
+
+      it_behaves_like 'Public fields returnable' do
+        let(:request) { question_request }
+        let(:fields) {  %w[id title body created_at updated_at author] }
+        let(:resource_response) { question_response }
+        let(:resource) { Question.first }
+      end
+
+      it 'saves question in database with new params' do
+        question_request
+        expect(Question.last.body).to eq 'New Body'
+      end
+    end
+  end
 end

@@ -13,3 +13,27 @@ shared_examples_for 'API Authorizable' do
     end
   end
 end
+
+shared_examples_for 'Status OK' do
+  it 'returns status OK' do
+    request
+    expect(response).to be_successful
+  end
+end
+
+shared_examples_for 'Public fields returnable' do
+  it 'returns all public fields' do
+    request
+    fields.each do |attr|
+      expect(resource_response[attr]).to eq resource.send(attr).as_json
+    end
+  end
+end
+
+shared_examples_for 'Private fields not returnable' do
+  it 'dosn\'t return private fields' do
+    fields.each do |attr|
+      expect(resource_response).to_not have_key(attr)
+    end
+  end
+end
