@@ -1,11 +1,7 @@
 require 'rails_helper'
 
 describe 'Answers API', type: :request do
-  let(:headers) { {
-    "CONTENT_TYPE" => "application/json",
-    "ACCEPT" => "application/json"
-  } }
-
+  let(:headers) { { "ACCEPT" => "application/json" } }
   let(:access_token) { create :access_token }
   let(:user) { create :user }
   let(:question) { create :question, author: user }
@@ -24,25 +20,23 @@ describe 'Answers API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns status 200' do
-        expect(response).to be_successful
+      it_behaves_like 'Status OK'
+
+      it_behaves_like 'Public fields returnable' do
+        let(:fields) { %w[id body created_at updated_at author_id] }
+        let(:resource_response) { answer_response }
+        let(:resource) { answer }
       end
 
       it 'returns list of answers' do
         expect(answers_response.size).to eq 3
       end
-
-      it 'returns all public fields' do
-        %w[id body created_at updated_at author_id].each do |attr|
-          expect(answer_response[attr]).to eq answer.send(attr).as_json
-        end
-      end
     end
   end
 
-  describe 'GET /api/v1/questions/:question_id/answers/:id' do
+  describe 'GET /api/v1/answers/:id' do
     let(:method) { :get }
-    let(:api_path) { "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable'
 
@@ -53,16 +47,21 @@ describe 'Answers API', type: :request do
       let(:comment_response) { answer_response['comments'].first }
       let!(:links) { create_list :link, 4, linkable: answer }
 
-      before { get api_path, params: { access_token: access_token.token }, headers: headers }
+      let(:answer_request) {
+        get api_path, params: {
+          access_token: access_token.token,
+          question_id: question.id
+        }, headers: headers 
+      }
 
-      it 'returns status 200' do
-        expect(response).to be_successful
-      end
+      before { answer_request }
 
-      it 'returns all public fields' do
-        %w[id body created_at updated_at author_id].each do |attr|
-          expect(answer_response[attr]).to eq answer.send(attr).as_json
-        end
+      it_behaves_like 'Status OK'
+
+      it_behaves_like 'Public fields returnable' do
+        let(:fields) { %w[id body created_at updated_at author_id] }
+        let(:resource_response) { answer_response }
+        let(:resource) { answer }
       end
 
       context 'comments' do
@@ -70,10 +69,10 @@ describe 'Answers API', type: :request do
           expect(answer_response['comments'].size).to eq 3
         end
 
-        it 'returns all public fields' do
-          %w[id body created_at updated_at author_id].each do |attr|
-            expect(comment_response[attr]).to eq comment.send(attr).as_json
-          end
+        it_behaves_like 'Public fields returnable' do
+          let(:fields) { %w[id body created_at updated_at author_id] }
+          let(:resource_response) { comment_response }
+          let(:resource) { comment }
         end
       end
 
@@ -82,7 +81,112 @@ describe 'Answers API', type: :request do
       end
 
       it 'returns files' do
-        expect(answer_response['files'].first.size).to eq 2 
+        expect(answer_response['files'].first.size).to eq 2
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions/:question_id/answers/' do
+    let(:method) { :post }
+    let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      let(:access_token) { create :access_token }
+      let(:answer) { { body: 'Test Title for Answer' } }
+      let(:answer_response) { json['answer'] }
+
+      let(:answer_request) {
+        post api_path, params: {
+          access_token: access_token.token,
+          question_id: question.id,
+          answer: answer,
+        }, headers: headers 
+      }
+
+      it_behaves_like 'Status OK' do
+        let(:request) { answer_request }
+      end
+
+      it_behaves_like 'Public fields returnable' do
+        let(:request) { answer_request }
+        let(:fields) { %w[id body created_at updated_at author] }
+        let(:resource_response) { answer_response }
+        let(:resource) { Answer.last }
+      end
+
+      it 'saves question in database' do
+        expect { answer_request }.to change(Answer, :count).by(1)
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/answers/:id' do
+    let(:method) { :patch }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      let(:access_token) {
+        create :access_token,
+        resource_owner_id: user.id
+      }
+
+      let(:new_params_for_answer) { { body: 'New Title for Answer' } }
+      let(:answer_response) { json['answer'] }
+
+      let(:answer_request) {
+        patch api_path, params: {
+          access_token: access_token.token,
+          answer: new_params_for_answer,
+        }, headers: headers 
+      }
+
+      it_behaves_like 'Status OK' do
+        let(:request) { answer_request }
+      end
+
+      it_behaves_like 'Public fields returnable' do
+        let(:request) { answer_request }
+        let(:fields) { %w[id body created_at updated_at author] }
+        let(:resource_response) { answer_response }
+        let(:resource) { Answer.first }
+      end
+
+      it 'saves answer in database with new params' do
+        answer_request
+        expect(Answer.first.body).to eq 'New Title for Answer'
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    let(:method) { :delete }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      let(:access_token) {
+        create :access_token,
+        resource_owner_id: user.id
+      }
+
+      let(:answer_request) {
+        delete api_path, params: {
+          access_token: access_token.token,
+          answer_id: answer.id,
+        }, headers: headers 
+      }
+
+      it_behaves_like 'Status OK' do
+        let(:request) { answer_request }
+      end
+
+      it 'deletes the answer from database' do
+        expect { answer_request }.to change(Answer, :count).by(-1)
       end
     end
   end

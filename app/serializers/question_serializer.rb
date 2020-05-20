@@ -8,12 +8,6 @@ class QuestionSerializer < ActiveModel::Serializer
 
   belongs_to :author, class_name: 'User'
 
-  # def files
-  #   object.files.map do |file|
-  #     { url: Rails.application.routes.url_helpers.rails_blob_path(file, only_path: true) }
-  #   end
-  # end
-
   def short_title
     object.title.truncate(4)
   end
