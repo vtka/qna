@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Questions API', type: :request do
   let(:headers) { {
-    "CONTENT_TYPE" => "application/json",
+    # "CONTENT_TYPE" => "application/json",
     "ACCEPT" => "application/json"
   } }
 
@@ -60,4 +60,32 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'POST /api/v1/questions' do
+    let(:method) { :post }
+    let(:api_path) { '/api/v1/questions' }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      let(:access_token) { create :access_token }
+      let(:question) { { title: 'Test Title', body: 'Test Body' } }
+      let(:question_response) { json['question'] }
+      before { post api_path, params: { access_token: access_token.token, question: question }, headers: headers }
+
+      it 'returns status 201' do
+        expect(response.status).to eq 201
+      end
+
+      it 'saves question in database' do
+        expect(Question.count).to eq 1
+      end
+
+      it 'returns all public fields' do
+        %w[id title body created_at updated_at].each do |attr|
+          expect(question_response[attr]).to eq Question.first.send(attr).as_json
+        end
+      end
+    end
+  end 
 end
