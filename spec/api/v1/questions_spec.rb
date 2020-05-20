@@ -132,4 +132,38 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let(:method) { :delete }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:user) { create :user }
+    let!(:question) { create :question, author: user }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'authorized' do
+      let(:access_token) {
+        create :access_token,
+        resource_owner_id: user.id
+      }
+
+      let(:question_response) { json['question'] }
+
+      let(:question_request) {
+        delete api_path,
+        params: { 
+          access_token: access_token.token,
+          question_id: question.id
+        }, headers: headers 
+      }
+
+      it_behaves_like 'Status OK' do
+        let(:request) { question_request }
+      end
+
+      it 'deletes the question from database' do
+        expect { question_request }.to change(Question, :count).by(-1)
+      end
+    end
+  end
 end
