@@ -19,6 +19,8 @@ module Qna
     # config.action_cable.disable_request_forgery_protection = false
     # config.action_cable.mount_path = '/websocket'
 
+    config.active_job.queue_adapter = :sidekiq
+
     config.autoload_paths += [config.root.join('app')]
 
     config.generators do |g|

@@ -16,4 +16,14 @@ RSpec.describe Question, type: :model do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
+  describe 'reputation' do
+    let(:user) { create(:user) }
+    let(:question) { build(:question, author: user) }
+
+    it 'calls ReputationJob#perform_later' do
+      expect(ReputationJob).to receive(:perform_later).with(question)
+      question.save!
+    end
+  end
+
 end

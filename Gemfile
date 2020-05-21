@@ -51,6 +51,9 @@ gem 'pry-byebug'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 
+# ACTIVE JOB
+gem 'sidekiq'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password

@@ -22,4 +22,12 @@ class Question < ApplicationRecord
     badge&.update!(user: user)
   end
 
+  after_create :calculate_reputation
+
+  private
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
+  end
+
 end
