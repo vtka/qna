@@ -13,26 +13,31 @@ RSpec.describe User, type: :model do
   let(:question) { create :question, author: author }
   let(:answer) { create :answer, question: question, author: author }
 
-  describe '#subscribed_of?' do
+  describe 'subscriptions' do
+    let(:other_user) { create :user }
     let!(:subscription) { create :subscription, user: user, question: question }
 
-    it 'subscribed of question' do
-      expect(user).to be_subscribed_of(question)
+    context '#subscribed_of?' do
+      it 'subscribed to the question' do
+        expect(user).to be_subscribed_of(question)
+      end
+
+      it 'unsubscribed of the question' do
+        expect(other_user).to_not be_subscribed_of(question)
+      end
     end
-  end
 
-  describe '#subscribe!' do
-    it 'calls Subscription#create!' do
-      expect { Question.create(attributes_for(:question).merge(author: user)) }
-        .to change(user.subscriptions, :count).by(1)
+    context '#subscribe!' do
+      it 'calls Subscription#create!' do
+        expect { Question.create(attributes_for(:question).merge(author: user)) }
+          .to change(user.subscriptions, :count).by(1)
+      end
     end
-  end
 
-  describe '#unsubscribe!' do
-    let!(:subscription) { create :subscription, user: user, question: question }
-
-    it 'calls Subscription#destroy!' do
-      expect { question.destroy }.to change(user.subscriptions, :count).by(-1)
+    context '#unsubscribe!' do
+      it 'calls Subscription#destroy!' do
+        expect { question.destroy }.to change(user.subscriptions, :count).by(-1)
+      end
     end
   end
 
