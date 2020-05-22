@@ -5,6 +5,8 @@ class Question < ApplicationRecord
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
+  has_many :subscriptions, dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :user
   belongs_to :author, class_name: 'User'
   has_one :badge, dependent: :destroy
 
@@ -23,6 +25,7 @@ class Question < ApplicationRecord
   end
 
   after_create :calculate_reputation
+  after_create_commit :subscribe_user!
 
   private
 
@@ -30,4 +33,8 @@ class Question < ApplicationRecord
     ReputationJob.perform_later(self)
   end
 
+  def subscribe_user!
+    author.subscribe!(self)
+  end
+  
 end

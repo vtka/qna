@@ -12,6 +12,15 @@ RSpec.describe Question, type: :model do
 
   it { should accept_nested_attributes_for :links }
 
+  describe '#subscribe_user!' do
+    let(:user) { create :user }
+
+    it 'calls Subscription#create!' do
+      expect { Question.create(attributes_for(:question).merge(author: user)) }
+        .to change(user.subscriptions, :count).by(1)
+    end
+  end
+
   it 'has many attached files' do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end

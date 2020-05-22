@@ -10,6 +10,17 @@ RSpec.describe Answer, type: :model do
 
   it { should accept_nested_attributes_for :links }
 
+  describe '#notify_subscribers' do
+    let(:user) { create :user }
+    let(:question) { create :question, author: user }
+
+    it 'calls NewAnswerDigestJob' do
+      expect(NewAnswerDigestJob).to receive(:perform_later).and_call_original
+
+      Answer.create(attributes_for(:answer).merge(question: question, author: user))
+    end
+  end
+
   describe 'best!' do
     let!(:author) { create(:user) }
     let!(:question) { create(:question, author: author) }

@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     confirmations: 'confirmations'
   }
 
+  resource :user do
+    resources :subscriptions, only: %i[create destroy]
+  end
+
   resources :attachments, only: %i[destroy]
 
   resources :badges, only: %i[index]

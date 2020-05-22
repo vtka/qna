@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_many :comments, foreign_key: 'author_id', dependent: :delete_all
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable,
@@ -27,5 +28,17 @@ class User < ApplicationRecord
 
   def create_authorization(auth)
     self.authorizations.create(provider: auth.provider, uid: auth.uid)
+  end
+
+  def subscribed_of?(resource)
+    subscriptions.exists?(question_id: resource)
+  end
+
+  def subscribe!(resource)
+    subscriptions.create!(question_id: resource.id)
+  end
+
+  def unsubscribe!(resource)
+    subscriptions.destroy!(question_id: resource.id)
   end
 end
