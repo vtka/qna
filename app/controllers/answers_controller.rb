@@ -28,7 +28,6 @@ class AnswersController < ApplicationController
 
     if @answer.save
       flash[:notice] = 'Your answer was successfully created.'
-      NewAnswerDigestJob.perform_later(@answer)
     end
   end
 
