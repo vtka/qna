@@ -40,10 +40,10 @@ describe 'Profiles API', type: :request do
     it_behaves_like 'API Authorizable'
 
     context 'authorized' do
+      let!(:users) { create_list :user, 3 }
       let(:me) { users.first }
       let(:user) { users.last }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
-      let!(:users) { create_list :user, 3 }
       let(:users_response) { json['users'] }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
@@ -62,7 +62,7 @@ describe 'Profiles API', type: :request do
       end
 
       it 'returns all users without me' do
-        expect(users_response.size).to eq 3
+        expect(users_response.size).to eq 2
 
         users_response.each { |user| expect(user).to_not eq me.as_json }
       end
