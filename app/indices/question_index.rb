@@ -7,5 +7,7 @@ ThinkingSphinx::Index.define :question, with: :active_record do
   indexes author.email, as: :author, sortable: true
 
   # attributes
-  has author_id, created_at, updated_at
+  has author_id, type: :integer
+  has created_at, type: :timestamp
+  has updated_at, type: :timestamp
 end

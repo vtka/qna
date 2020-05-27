@@ -95,6 +95,9 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'capybara-email'
   gem 'selenium-webdriver'
+  # Database cleaner
+  gem 'database_cleaner-active_record'
+  gem 'database_cleaner-redis'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'shoulda', '~> 3.5'
