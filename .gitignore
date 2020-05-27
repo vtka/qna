@@ -36,5 +36,6 @@ yarn-debug.log*
 .rakeTasks
 .DS_Store
 /.env
-/config/*.sphinx.conf
+/config/development.sphinx.conf
+/config/test.sphinx.conf
 /db/sphinx
