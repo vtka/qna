@@ -56,6 +56,13 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 
+# SPHINX
+gem 'mysql2',          '~> 0.4.10', :platform => :ruby
+gem 'thinking-sphinx', '~> 4.0'
+
+# DECENT EXPOSURE
+gem 'decent_exposure', '3.0.0'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -91,6 +98,9 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'capybara-email'
   gem 'selenium-webdriver'
+  # Database cleaner
+  gem 'database_cleaner-active_record'
+  gem 'database_cleaner-redis'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'shoulda', '~> 3.5'
