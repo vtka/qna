@@ -1,0 +1,12 @@
+.row.justify-content-center.mt-3
+  .col.col-md-10
+    h4 Search results
+    .search-results
+      - if @search_result.success?
+        - @search_result.content.each do |resource|
+          = render partial: resource.class.to_s.downcase, locals: { resource: resource }
+      - else
+        = 'Your search - '
+        b
+          = @search_result.query
+        = ' - did not match any documents.'

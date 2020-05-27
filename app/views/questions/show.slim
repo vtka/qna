@@ -17,6 +17,6 @@
 
     div class='divider mt-4 mb-4'
       <hr/>
-
-    - if user_signed_in?
-      = render 'answers/form'
+    .answer-form
+      - if user_signed_in?
+        = render 'answers/form'

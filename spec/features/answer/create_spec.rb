@@ -50,7 +50,9 @@ feature 'User can create answer', %q{
   scenario 'Unauthenticated user tries to answer the question' do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Answer'
+    within '.answer-form' do
+      expect(page).to_not have_content 'Answer'
+    end
   end
 
   describe 'Multiple sessions', js: true do

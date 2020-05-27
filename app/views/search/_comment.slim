@@ -1,0 +1,7 @@
+.card.bg-light.shadow-sm.mt-3
+  .card-body
+    p
+      = resource.body.truncate(160)
+    - question = resource.commentable.is_a?(Question) ? resource.commentable : resource.commentable.question
+    = link_to('more...', question_path(question))
+    

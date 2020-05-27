@@ -1,0 +1,6 @@
+.card.bg-light.shadow-sm.mt-3
+  .card-body
+    p
+      = resource.body.truncate(160)
+    = link_to('more...', question_path(resource))
+    
