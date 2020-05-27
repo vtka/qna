@@ -8,7 +8,7 @@ describe 'Profiles API', type: :request do
 
   describe 'GET /api/v1/profiles/me' do
     let(:method) { :get }
-    let(:api_path) { me_api_v1_profiles_path }
+    let(:api_path) { '/api/v1/profiles/me' }
 
     it_behaves_like 'API Authorizable'
 
@@ -16,24 +16,19 @@ describe 'Profiles API', type: :request do
       let(:me) { create :user }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      before {
-        get api_path, params: { access_token: access_token.token }, headers: headers 
-      }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns status 200' do
-        expect(response).to be_successful
+      it_behaves_like 'Status OK'
+
+      it_behaves_like 'Public fields returnable' do
+        let(:fields) { %w[id email admin created_at updated_at] }
+        let(:resource_response) { json['user'] }
+        let(:resource) { me }
       end
 
-      it 'returns all public fields' do
-        %w[id email admin created_at updated_at].each do |attr|
-          expect(json["user"][attr]).to eq me.send(attr).as_json
-        end
-      end
-
-      it 'dosn\'t return private fields' do
-        %w[password encrypted_password].each do |attr|
-          expect(json).to_not have_key(attr)
-        end
+      it_behaves_like 'Private fields not returnable' do
+        let(:fields) { %w[password encrypted_password] }
+        let(:resource_response) { json }
       end
     end
   end
@@ -53,24 +48,23 @@ describe 'Profiles API', type: :request do
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns status 200' do
-        expect(response).to be_successful
+      it_behaves_like 'Status OK'
+
+      it_behaves_like 'Public fields returnable' do
+        let(:fields) { %w[id email admin created_at updated_at] }
+        let(:resource_response) { users_response.last }
+        let(:resource) { user }
+      end
+
+      it_behaves_like 'Private fields not returnable' do
+        let(:fields) { %w[password encrypted_password] }
+        let(:resource_response) { users_response.last }
       end
 
       it 'returns all users without me' do
-        expect(users_response.size).to eq 2
-      end
+        expect(users_response.size).to eq 3
 
-      it 'returns all public fields' do
-        %w[id email admin created_at updated_at].each do |attr|
-          expect(users_response.last[attr]).to eq user.send(attr).as_json
-        end
-      end
-
-      it 'dosn\'t return private fields' do
-        %w[password encrypted_password].each do |attr|
-          expect(users_response.last).to_not have_key(attr)
-        end
+        users_response.each { |user| expect(user).to_not eq me.as_json }
       end
     end
   end
