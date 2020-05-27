@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
   resources :links, only: %i[destroy]
 
+  resources :search, only: %i[index]
+
   concern :votable do
     member do
       post :positive, :negative

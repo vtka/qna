@@ -60,7 +60,7 @@ feature 'User can sign in via social networks', %q{
   end
 
   describe 'Existing user' do
-    given!(:user) { create(:user, email: 'user@example.com') }
+    given!(:user) { create(:user, email: 'user1@example.com') }
 
     background { visit new_user_session_path }
 

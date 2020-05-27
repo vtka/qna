@@ -60,6 +60,9 @@ gem 'whenever', require: false
 gem 'mysql2',          '~> 0.4.10', :platform => :ruby
 gem 'thinking-sphinx', '~> 4.0'
 
+# DECENT EXPOSURE
+gem 'decent_exposure', '3.0.0'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
