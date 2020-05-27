@@ -2,8 +2,8 @@ class SearchService
   attr_reader :query, :scope
 
   def initialize(params)
-    @query = params[:q]
-    @scope = params[:scope]
+    @query = ThinkingSphinx::Query.escape(params[:q])
+    @scope = ThinkingSphinx::Query.escape(params[:scope])
   end
 
   def call
