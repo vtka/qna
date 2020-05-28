@@ -1,8 +1,6 @@
 nav.navbar.navbar-expand-lg.navbar-light.bg-light
   a.navbar-brand href="#"  qna
-  button.navbar-toggler aria-controls="navbarNav" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarNav" data-toggle="collapse" type="button"
-    span.navbar-toggler-icon
-  #navbarNav.collapse.navbar-collapse
+  #navbarNav
     ul.navbar-nav
       li.nav-item.active
         = link_to 'Questions', questions_path, class: "nav-link"
@@ -13,13 +11,13 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
           = link_to 'Logout', destroy_user_session_path, method: :delete, class: "nav-link"
         - else
           = link_to 'Login', new_user_session_path, class: "nav-link"
-    .search-form.form-inline.ml-3
-      = form_with url: search_index_path, method: :get, local: true do |f|
-        .input-group
-          .input-group-prepend.search-field
-            = f.text_field :q, class: 'form-control form-control-sm', placeholder: 'Email address', 'type' => 'search', 'placeholder' => 'Search', 'aria-label' => 'Search', required: true
-          .search-scope
-            = f.select :scope, Rails.configuration.x.search.available_resources, {}, class: 'custom-select custom-select-sm'
-          .input-group-append.search-button
-            button class='btn btn-outline-primary btn-sm' type='submit'
-             = 'Search'
+  .search-form.form-inline.ml-3
+    = form_with url: search_index_path, method: :get, local: true do |f|
+      .input-group
+        .input-group-prepend.search-field
+          = f.text_field :q, class: 'form-control form-control-sm', placeholder: 'Email address', 'type' => 'search', 'placeholder' => 'Search', 'aria-label' => 'Search', required: true
+        .search-scope
+          = f.select :scope, Rails.configuration.x.search.available_resources, {}, class: 'custom-select custom-select-sm'
+        .input-group-append.search-button
+          button id="search-button" class='btn btn-outline-primary btn-sm' type='submit'
+            = 'Search'

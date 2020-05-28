@@ -58,7 +58,7 @@ gem 'whenever', require: false
 
 # SPHINX
 gem 'mysql2',          '~> 0.4.10', :platform => :ruby
-gem 'thinking-sphinx', '~> 4.0'
+gem 'thinking-sphinx', '~> 4.4.1', git: 'https://github.com/pat/thinking-sphinx.git', branch: 'develop'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
@@ -94,7 +94,7 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'capybara-email'
-  gem 'selenium-webdriver'
+  gem 'capybara-selenium'
   # Database cleaner
   gem 'database_cleaner-active_record'
   gem 'database_cleaner-redis'

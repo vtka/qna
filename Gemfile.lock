@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/pat/thinking-sphinx.git
+  revision: 48e887df2b7f7a6e7140ca5ab978592edeb2ba52
+  branch: develop
+  specs:
+    thinking-sphinx (4.4.1)
+      activerecord (>= 3.1.0)
+      builder (>= 2.1.2)
+      innertube (>= 1.0.2)
+      joiner (>= 0.2.0)
+      middleware (>= 0.1.0)
+      riddle (~> 2.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -97,6 +110,9 @@ GEM
     capybara-email (3.0.1)
       capybara (>= 2.4, < 4.0)
       mail
+    capybara-selenium (0.0.6)
+      capybara
+      selenium-webdriver
     case_transform (0.2)
       activesupport
     childprocess (3.0.0)
@@ -339,13 +355,6 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     temple (0.8.2)
-    thinking-sphinx (4.4.1)
-      activerecord (>= 3.1.0)
-      builder (>= 2.1.2)
-      innertube (>= 1.0.2)
-      joiner (>= 0.2.0)
-      middleware (>= 0.1.0)
-      riddle (~> 2.3)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -392,6 +401,7 @@ DEPENDENCIES
   cancancan
   capybara (>= 2.15)
   capybara-email
+  capybara-selenium
   cocoon
   database_cleaner-active_record
   database_cleaner-redis
@@ -418,7 +428,6 @@ DEPENDENCIES
   rails-controller-testing
   rspec-rails (~> 4.0.0.beta)
   sass-rails (>= 6)
-  selenium-webdriver
   shoulda (~> 3.5)
   shoulda-matchers (~> 3.0.0.alpha)
   sidekiq
@@ -426,7 +435,7 @@ DEPENDENCIES
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)
-  thinking-sphinx (~> 4.0)
+  thinking-sphinx (~> 4.4.1)!
   turbolinks
   tzinfo-data
   validate_url

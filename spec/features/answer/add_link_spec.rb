@@ -36,6 +36,7 @@ feature 'User can add link answer', %q{
     click_on 'Answer'
 
     within '.answers' do
+      sleep(0.5)
       expect(page).to have_link 'My gist', href: gist_url
       expect(page).to have_css('.gist')
     end
