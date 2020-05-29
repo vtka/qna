@@ -41,9 +41,27 @@ feature 'User can search within records', %q(
         end
       end
 
+      scenario 'which does match Question records in All scope' do
+        ThinkingSphinx::Test.run do
+          fill_in 'Search', with: question.title
+          find(:css, '.search-button').click
+
+          expect(page).to have_content 'Search results'
+
+          within '.search-results' do
+            expect(page).to have_content question.title
+            expect(page).to have_content question.body.truncate(160)
+            questions.drop(1).each do |q|
+              expect(page).to_not have_content q.title
+            end
+          end
+        end
+      end
+
       scenario 'which does match Question records' do
         ThinkingSphinx::Test.run do
           fill_in 'Search', with: question.title
+          find('#scope', :text => 'Questions').click
           find(:css, '.search-button').click
 
           expect(page).to have_content 'Search results'
@@ -61,6 +79,7 @@ feature 'User can search within records', %q(
       scenario 'which does match Answer records' do
         ThinkingSphinx::Test.run do
           fill_in 'Search', with: answer.body
+          find('#scope', :text => 'Answers').click
           find(:css, '.search-button').click
 
           expect(page).to have_content 'Search results'
@@ -77,6 +96,7 @@ feature 'User can search within records', %q(
       scenario 'which does match User records' do
         ThinkingSphinx::Test.run do
           fill_in 'Search', with: user.email
+          find('#scope', :text => 'Users').click
           find(:css, '.search-button').click
 
           expect(page).to have_content 'Search results'
@@ -93,6 +113,7 @@ feature 'User can search within records', %q(
       scenario 'which does match Comment records' do
         ThinkingSphinx::Test.run do
           fill_in 'Search', with: comment.body
+          find('#scope', :text => 'Comments').click
           find(:css, '.search-button').click
 
           expect(page).to have_content 'Search results'
