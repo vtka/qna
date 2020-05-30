@@ -60,6 +60,8 @@ gem 'whenever', require: false
 gem 'mysql2',          '~> 0.4.10', :platform => :ruby
 gem 'thinking-sphinx', '~> 4.4.1', git: 'https://github.com/pat/thinking-sphinx.git', branch: 'develop'
 
+gem 'mini_racer'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -88,6 +90,13 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # DEPLOY
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :test do
