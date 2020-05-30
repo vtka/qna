@@ -52,7 +52,7 @@ gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 
 # ACTIVE JOB
-gem 'sidekiq'
+gem 'sidekiq', '< 6'
 gem 'sinatra', require: false
 gem 'whenever', require: false
 
