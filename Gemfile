@@ -61,6 +61,7 @@ gem 'mysql2',          '~> 0.4.10', :platform => :ruby
 gem 'thinking-sphinx', '~> 4.4.1', git: 'https://github.com/pat/thinking-sphinx.git', branch: 'develop'
 
 gem 'mini_racer'
+gem 'unicorn'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
@@ -99,6 +100,7 @@ group :development do
   gem 'capistrano-passenger', require: false
   gem 'capistrano-sidekiq', require: false
   gem 'capistrano-ssh-doctor', '~> 1.0'
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
