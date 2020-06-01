@@ -1,22 +1,23 @@
-.row.justify-content-center.mt-3
-  .col.col-md-10
-    .question-errors
-      = render 'shared/errors', resource: @question
+- cache @question do
+  .row.justify-content-center.mt-3
+    .col.col-md-10
+      .question-errors
+        = render 'shared/errors', resource: @question
 
-    div#question-channel-provider data-id=@question.to_gid_param class='question mt-3 mb-3' data-question-id="#{@question.id}"
-      = render 'form', class: 'hidden'
+      div#question-channel-provider data-id=@question.to_gid_param class='question mt-3 mb-3' data-question-id="#{@question.id}"
+        = render 'form', class: 'hidden'
 
-    div class='divider mt-4 mb-4'
-      <hr/>
-      
-    .answer-errors
-      = render 'shared/errors', resource: @answer
+      div class='divider mt-4 mb-4'
+        <hr/>
+        
+      .answer-errors
+        = render 'shared/errors', resource: @answer
 
-    .answers id="question-answers-#{@question.id}"
-      = render @question.answers.order('best DESC, created_at')
+      .answers id="question-answers-#{@question.id}"
+        = render @question.answers.order('best DESC, created_at')
 
-    div class='divider mt-4 mb-4'
-      <hr/>
-    .answer-form
-      - if user_signed_in?
-        = render 'answers/form'
+      div class='divider mt-4 mb-4'
+        <hr/>
+      .answer-form
+        - if user_signed_in?
+          = render 'answers/form'

@@ -62,6 +62,7 @@ gem 'thinking-sphinx', '~> 4.4.1', git: 'https://github.com/pat/thinking-sphinx.
 
 gem 'mini_racer'
 gem 'unicorn'
+gem 'redis-rails'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

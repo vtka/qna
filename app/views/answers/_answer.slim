@@ -1,40 +1,41 @@
-div.answer-channel-provider data-channel-id=answer.to_gid_param class='answer mt-3 mb-3' data-answer-id="#{answer.id}"
-  .card class='bg-light' id="answer-#{answer.id}" class=("best border-success" if answer.best?)
-    .card-body
-      p.card-text
-        - if answer.persisted?
-          p= answer.body
-      .files
-        = render 'shared/files', resource: answer
-      .links
-        = render 'links/link', resource: answer
+- cache answer do
+  div.answer-channel-provider data-channel-id=answer.to_gid_param class='answer mt-3 mb-3' data-answer-id="#{answer.id}"
+    .card class='bg-light' id="answer-#{answer.id}" class=("best border-success" if answer.best?)
+      .card-body
+        p.card-text
+          - if answer.persisted?
+            p= answer.body
+        .files
+          = render 'shared/files', resource: answer
+        .links
+          = render 'links/link', resource: answer
 
-      - if can?(:update, answer)
-        div.updateAnswer
-          p= link_to 'Edit', '#', class: 'edit-answer-link text-warning', data: { answer_id: answer.id }
-          = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-            = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Edit your answer'
-            = f.label :files
-            = f.file_field :files, multiple: true, class: 'form-control mt-2 mb-2'
-            .add-link
-              = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+        - if can?(:update, answer)
+          div.updateAnswer
+            p= link_to 'Edit', '#', class: 'edit-answer-link text-warning', data: { answer_id: answer.id }
+            = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+              = f.text_area :body, autocomplete: "body", class: 'form-control mt-2 mb-2', placeholder: 'Edit your answer'
+              = f.label :files
+              = f.file_field :files, multiple: true, class: 'form-control mt-2 mb-2'
+              .add-link
+                = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
 
-            = f.submit 'Save', class: 'btn btn-primary'
+              = f.submit 'Save', class: 'btn btn-primary'
 
-      - if can?(:destroy, answer)
-        div.deleteAnswer
-          p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger', remote: true, data: { confirm: 'Are your sure?' }
+        - if can?(:destroy, answer)
+          div.deleteAnswer
+            p= link_to 'Delete', answer_path(answer), method: :delete, class: 'text-danger', remote: true, data: { confirm: 'Are your sure?' }
 
-      - if can?(:best, answer) && !answer.best?
-        div.bestAnswer  
-          = link_to 'Best answer', best_answer_path(answer), class: 'btn btn-success', method: :patch, remote: true
-      
-      .vote
-        = render partial: 'votes/vote', locals: { resource: answer }
+        - if can?(:best, answer) && !answer.best?
+          div.bestAnswer  
+            = link_to 'Best answer', best_answer_path(answer), class: 'btn btn-success', method: :patch, remote: true
+        
+        .vote
+          = render partial: 'votes/vote', locals: { resource: answer }
 
-    .answer-comments.p-4 id="answer-comment-#{answer.id}"
-      = render partial: 'comments/list', locals: { resource: answer }
+      .answer-comments.p-4 id="answer-comment-#{answer.id}"
+        = render partial: 'comments/list', locals: { resource: answer }
 
-  div class='divider mt-4 mb-4'
-    <hr/>
+    div class='divider mt-4 mb-4'
+      <hr/>
       
