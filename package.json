@@ -8,7 +8,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.2.2",
     "actioncable": "^5.2.4-2",
-    "bootstrap": "4.1.1",
+    "bootstrap": "4.3.1",
     "cocoon": "^0.1.1",
     "cocoon-js": "0.0.5",
     "cocoon-rails": "^1.2.6",
